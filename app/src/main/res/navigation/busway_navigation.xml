@@ -28,4 +28,24 @@
         android:name="com.sta.buswayapp.ProcessFragment"
         android:label="fragment_process"
         tools:layout="@layout/fragment_process" />
+    <fragment
+        android:id="@+id/boxingWorkerSideFragment"
+        android:name="com.sta.buswayapp.BoxingWorkerSideFragment"
+        android:label="fragment_boxing_worker_side"
+        tools:layout="@layout/fragment_boxing_worker_side" />
+    <fragment
+        android:id="@+id/boxingSupervisorSideFragment"
+        android:name="com.sta.buswayapp.BoxingSupervisorSideFragment"
+        android:label="fragment_boxing_supervisor_side"
+        tools:layout="@layout/fragment_boxing_supervisor_side" />
+    <fragment
+        android:id="@+id/packingWorkerSideFragment"
+        android:name="com.sta.buswayapp.PackingWorkerSideFragment"
+        android:label="fragment_packing_worker_side"
+        tools:layout="@layout/fragment_packing_worker_side" />
+    <fragment
+        android:id="@+id/packingSupervisorSideFragment"
+        android:name="com.sta.buswayapp.PackingSupervisorSideFragment"
+        android:label="fragment_packing_supervisor_side"
+        tools:layout="@layout/fragment_packing_supervisor_side" />
 </navigation>

@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".CurrentCustomersFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <TextView
         android:id="@+id/customer_page_title"
@@ -22,8 +26,6 @@
         android:id="@+id/customers_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/elsewedy_logo"
-        android:layout_below="@id/customer_page_title"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"/>
 
@@ -33,7 +35,6 @@
         android:layout_height="81dp"
         android:layout_gravity="center"
         android:scaleType="centerInside"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:src="@drawable/elsewedy_logo"/>
-</RelativeLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

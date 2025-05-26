@@ -40,9 +40,9 @@ class MainActivity : AppCompatActivity() {
                 Integer.toString(destination.id)
             }
 
-            Toast.makeText(this@MainActivity, "Navigated to $dest",
-                Toast.LENGTH_SHORT).show()
-            Log.d("NavigationActivity", "Navigated to $dest")
+//            Toast.makeText(this@MainActivity, "Navigated to $dest",
+//                Toast.LENGTH_SHORT).show()
+//            Log.d("NavigationActivity", "Navigated to $dest")
         }
 
     }

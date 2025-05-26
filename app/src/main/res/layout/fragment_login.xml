@@ -48,6 +48,7 @@
         app:cardUseCompatPadding="true">
 
         <EditText
+            android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -63,7 +64,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textAllCaps="true"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:text="Password" />
@@ -78,9 +79,10 @@
         app:cardUseCompatPadding="true">
 
         <EditText
+            android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
+            android:inputType="numberPassword"
             android:background="@null"
             android:padding="12dp"
             android:hint="*******"/>
@@ -89,23 +91,23 @@
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/signInButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#BDBDBD"
         android:textColor="@color/black"
         android:text="Sign in" />
 
         <ImageView
-            android:layout_width="128dp"
-            android:layout_height="128dp"
+            android:layout_width="81dp"
+            android:layout_height="81dp"
             android:layout_gravity="center"
             android:scaleType="centerInside"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             android:src="@drawable/elsewedy_logo"/>
     </LinearLayout>
 

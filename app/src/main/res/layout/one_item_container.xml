@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/customer_name_cardView"
+        android:id="@+id/one_item_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#BDBDBD"
@@ -14,7 +14,7 @@
         app:cardElevation="2dp">
 
         <TextView
-            android:id="@+id/customer_name"
+            android:id="@+id/one_item_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="24dp"
