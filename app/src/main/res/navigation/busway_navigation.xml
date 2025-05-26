@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/busway_navigation"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.sta.buswayapp.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_currentCustomersFragment"
+            app:destination="@id/currentCustomersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/currentCustomersFragment"
+        android:name="com.sta.buswayapp.CurrentCustomersFragment"
+        android:label="fragment_current_customers"
+        tools:layout="@layout/fragment_current_customers" >
+        <action
+            android:id="@+id/action_currentCustomersFragment_to_processFragment"
+            app:destination="@id/processFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/processFragment"
+        android:name="com.sta.buswayapp.ProcessFragment"
+        android:label="fragment_process"
+        tools:layout="@layout/fragment_process" />
+</navigation>

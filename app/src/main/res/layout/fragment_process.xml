@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".ProcessFragment">
+
+    <TextView
+        android:id="@+id/process_page_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="Customers: " />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/boxingProcessCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#BDBDBD"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp">
+
+        <TextView
+            android:id="@+id/boxingProcessTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:text="Boxing"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+    android:id="@+id/packingProcessCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="#BDBDBD"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <TextView
+        android:id="@+id/packingProcessTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:text="Packing"/>
+
+</androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+    android:id="@+id/dispatchingProcessCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="#BDBDBD"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <TextView
+        android:id="@+id/dispatchingProcessTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:text="Dispatching"/>
+
+</androidx.cardview.widget.CardView>
+
+</LinearLayout>
