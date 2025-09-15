@@ -3,32 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PackingSupervisorSideFragment">
+    tools:context=".ui.packing.PackingSupervisorSideFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/packingInProgressAdminView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Packing in progress"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/packingProcessCustomerNameAdminView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Customers: "
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/packingProcessJobOrderAdminView"
@@ -41,6 +21,27 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/packingProcessCustomerNameAdminView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Customer ID: "
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/packingInProgressAdminView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Packing in progress"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -48,6 +49,18 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/scanBoxBarcodeOrRfidButtonPackingProcess"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:textAllCaps="true"
+            android:text="Scan Box QR-code"
+            android:backgroundTint="#BDBDBD"
+            android:textColor="@color/black"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/completedPackingBoxesRecyclerView"

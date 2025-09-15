@@ -4,26 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProcessFragment">
-
-    <TextView
-        android:id="@+id/process_page_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:text="Customers: "
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+    tools:context=".ui.main.ProcessFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/boxingProcessCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/process_page_title"
-        android:layout_margin="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:cardBackgroundColor="#BDBDBD"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -32,8 +21,8 @@
             android:id="@+id/boxingProcessTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="24dp"
+            android:gravity="center"
+            android:padding="16dp"
             android:text="Boxing"
             android:textColor="@color/black"
             android:textSize="24sp" />
@@ -45,7 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/boxingProcessCardView"
-        android:layout_margin="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:cardBackgroundColor="#BDBDBD"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -54,9 +45,9 @@
             android:id="@+id/packingProcessTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="24dp"
-            android:text="Packing"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="Packing Check"
             android:textColor="@color/black"
             android:textSize="24sp" />
 
@@ -67,7 +58,9 @@
         android:layout_below="@id/packingProcessCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:cardBackgroundColor="#BDBDBD"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp">
@@ -76,11 +69,59 @@
             android:id="@+id/dispatchingProcessTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="24dp"
+            android:gravity="center"
+            android:padding="16dp"
             android:text="Dispatching"
             android:textColor="@color/black"
             android:textSize="24sp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/scanItemQRCodeCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dispatchingProcessCardView"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="#BDBDBD"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp">
+
+        <TextView
+            android:id="@+id/scanItemQRCodeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="Scan Item QR-code"
+            android:textColor="@color/black"
+            android:textSize="24sp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/deliveredBoxesCardView"
+        android:layout_below="@id/scanItemQRCodeCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="#BDBDBD"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp">
+
+        <TextView
+            android:id="@+id/deliveredBoxesTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="Delivered Boxes"
+            android:textColor="@color/black"
+            android:textSize="24sp"/>
 
     </androidx.cardview.widget.CardView>
 

@@ -7,18 +7,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.BoxStatusModel;
+import com.sta.buswayapp.model.Root;
 
 import java.util.ArrayList;
 
 public class CompletedBoxAdapter extends RecyclerView.Adapter<CompletedBoxAdapter.BoxViewHolder> {
 
-    private Context context;
-    private ArrayList<BoxStatusModel> boxStatusModelArrayList;
+    private final Context context;
+    private final ArrayList<BoxStatusModel> boxStatusModelArrayList;
     private Fragment fragment;
 
     public CompletedBoxAdapter(Context context, ArrayList<BoxStatusModel> boxStatusModelArrayList, Fragment fragment) {
@@ -37,6 +39,7 @@ public class CompletedBoxAdapter extends RecyclerView.Adapter<CompletedBoxAdapte
     public void onBindViewHolder(@NonNull CompletedBoxAdapter.BoxViewHolder holder, int position) {
         holder.boxNumberTextView.setText(boxStatusModelArrayList.get(position).getBoxNumber());
         holder.boxStatusTextView.setText(boxStatusModelArrayList.get(position).getBoxStatus());
+
     }
 
     @Override
@@ -46,10 +49,12 @@ public class CompletedBoxAdapter extends RecyclerView.Adapter<CompletedBoxAdapte
 
     public static class BoxViewHolder extends RecyclerView.ViewHolder {
         TextView boxNumberTextView, boxStatusTextView;
+        CardView boxCardView;
         public BoxViewHolder(@NonNull View itemView) {
             super(itemView);
             boxNumberTextView = itemView.findViewById(R.id.boxNumber);
             boxStatusTextView = itemView.findViewById(R.id.boxStatus);
+            boxCardView = itemView.findViewById(R.id.boxCardView);
         }
     }
 }

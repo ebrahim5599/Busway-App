@@ -2,4 +2,7 @@
     <string name="app_name">Busway App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="scan_barcode">scan barcode</string>
+    <string name="guest_login"><u>Guest Login</u></string>
+    <string name="kg">KG</string>
 </resources>

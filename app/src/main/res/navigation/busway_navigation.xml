@@ -7,45 +7,81 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.sta.buswayapp.LoginFragment"
+        android:name="com.sta.buswayapp.ui.main.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_currentCustomersFragment"
             app:destination="@id/currentCustomersFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/currentCustomersFragment"
-        android:name="com.sta.buswayapp.CurrentCustomersFragment"
+        android:name="com.sta.buswayapp.ui.main.CustomerFragment"
         android:label="fragment_current_customers"
-        tools:layout="@layout/fragment_current_customers" >
+        tools:layout="@layout/fragment_customer" >
         <action
             android:id="@+id/action_currentCustomersFragment_to_processFragment"
             app:destination="@id/processFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/processFragment"
-        android:name="com.sta.buswayapp.ProcessFragment"
+        android:name="com.sta.buswayapp.ui.main.ProcessFragment"
         android:label="fragment_process"
         tools:layout="@layout/fragment_process" />
+
     <fragment
         android:id="@+id/boxingWorkerSideFragment"
-        android:name="com.sta.buswayapp.BoxingWorkerSideFragment"
+        android:name="com.sta.buswayapp.ui.boxing.worker.AddingNewBoxFragment"
         android:label="fragment_boxing_worker_side"
-        tools:layout="@layout/fragment_boxing_worker_side" />
-    <fragment
-        android:id="@+id/boxingSupervisorSideFragment"
-        android:name="com.sta.buswayapp.BoxingSupervisorSideFragment"
-        android:label="fragment_boxing_supervisor_side"
-        tools:layout="@layout/fragment_boxing_supervisor_side" />
-    <fragment
-        android:id="@+id/packingWorkerSideFragment"
-        android:name="com.sta.buswayapp.PackingWorkerSideFragment"
-        android:label="fragment_packing_worker_side"
-        tools:layout="@layout/fragment_packing_worker_side" />
+        tools:layout="@layout/fragment_adding_new_box" />
+
     <fragment
         android:id="@+id/packingSupervisorSideFragment"
-        android:name="com.sta.buswayapp.PackingSupervisorSideFragment"
+        android:name="com.sta.buswayapp.ui.packing.PackingSupervisorSideFragment"
         android:label="fragment_packing_supervisor_side"
         tools:layout="@layout/fragment_packing_supervisor_side" />
+    <fragment
+        android:id="@+id/guestDataFragment"
+        android:name="com.sta.buswayapp.ui.guestView.GuestDataFragment"
+        android:label="fragment_guest_data"
+        tools:layout="@layout/fragment_guest_data" />
+
+    <fragment
+        android:id="@+id/guestScanFragment"
+        android:name="com.sta.buswayapp.ui.guestView.GuestScanFragment"
+        android:label="fragment_guest_scan"
+        tools:layout="@layout/fragment_guest_scan" />
+    <fragment
+        android:id="@+id/projectFragment"
+        android:name="com.sta.buswayapp.ui.main.ProjectFragment"
+        android:label="fragment_project"
+        tools:layout="@layout/fragment_project" />
+    <fragment
+        android:id="@+id/newOrEditBoxFragment"
+        android:name="com.sta.buswayapp.ui.boxing.worker.NewOrEditBoxFragment"
+        android:label="fragment_new_or_edit_box"
+        tools:layout="@layout/fragment_new_or_edit_box" />
+    <fragment
+        android:id="@+id/addingNewItemsFragment"
+        android:name="com.sta.buswayapp.ui.boxing.worker.AddingNewItemsFragment"
+        android:label="fragment_adding_new_items"
+        tools:layout="@layout/fragment_adding_new_items" />
+    <fragment
+        android:id="@+id/reviewCompletedItemsFragment"
+        android:name="com.sta.buswayapp.ui.boxing.admin.ReviewCompletedItemsFragment"
+        android:label="fragment_review_completed_items"
+        tools:layout="@layout/fragment_review_completed_items" />
+    <fragment
+        android:id="@+id/reviewCompletedBoxesFragment"
+        android:name="com.sta.buswayapp.ui.boxing.admin.ReviewCompletedBoxesFragment"
+        android:label="fragment_review_completed_boxes"
+        tools:layout="@layout/fragment_review_completed_boxes" />
+    <fragment
+        android:id="@+id/reviewPackedItemsFragment"
+        android:name="com.sta.buswayapp.ui.packing.ReviewPackedItemsFragment"
+        android:label="fragment_review_packed_items"
+        tools:layout="@layout/fragment_review_packed_items" />
+
 </navigation>

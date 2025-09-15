@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -64,8 +65,9 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             public void onClick(View v) {
                 editor.putString(ConstantNames.CLIENT, customerNamesArrayList.get(position));
                 editor.apply();
+                Toast.makeText(context, sharedPreferences.getString(ConstantNames.PROCESS, "default"), Toast.LENGTH_SHORT).show();
                 NavHostFragment.findNavController(fragment)
-                        .navigate(R.id.processFragment, null, options);
+                        .navigate(R.id.projectFragment, null, options);
             }
         });
 
