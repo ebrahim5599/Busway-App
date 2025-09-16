@@ -55,11 +55,8 @@ public class ProjectAdapter extends CustomerAdapter {
                                 .navigate(R.id.reviewCompletedBoxesFragment, null, options);
 
                 } else if (processName.equals(ConstantNames.PACKING_CHECK)) {
-                    if (sharedPreferences.getString(ConstantNames.TYPE_OF_USER, "def").equals(ConstantNames.WORKER))
-                        Toast.makeText(fragment.getContext(), "Opened for Admin only.", Toast.LENGTH_SHORT).show();
-                    else
-                        NavHostFragment.findNavController(fragment)
-                                .navigate(R.id.packingSupervisorSideFragment, null, options);
+                    NavHostFragment.findNavController(fragment)
+                            .navigate(R.id.packingSupervisorSideFragment, null, options);
                 }
             }
         });

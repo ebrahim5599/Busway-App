@@ -21,8 +21,8 @@ import com.sta.buswayapp.model.ConstantNames;
 
 public class ProcessFragment extends Fragment {
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,11 +55,14 @@ public class ProcessFragment extends Fragment {
         packingCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "packing", Toast.LENGTH_SHORT).show();
-                editor.putString(ConstantNames.PROCESS, ConstantNames.PACKING_CHECK);
-                editor.apply();
-                NavHostFragment.findNavController(ProcessFragment.this)
-                        .navigate(R.id.currentCustomersFragment, null, options);
+                if (sharedPreferences.getString(ConstantNames.TYPE_OF_USER, "").equals(ConstantNames.SUPERVISOR)){
+                    Toast.makeText(getContext(), "packing", Toast.LENGTH_SHORT).show();
+                    editor.putString(ConstantNames.PROCESS, ConstantNames.PACKING_CHECK);
+                    editor.apply();
+                    NavHostFragment.findNavController(ProcessFragment.this)
+                            .navigate(R.id.currentCustomersFragment, null, options);
+                }else
+                    Toast.makeText(getContext(), "Not allowed for your account", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -67,11 +70,13 @@ public class ProcessFragment extends Fragment {
         dispatchingCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "dispatching", Toast.LENGTH_SHORT).show();
-                editor.putString(ConstantNames.PROCESS, ConstantNames.DISPATCHING);
-                editor.apply();
-                NavHostFragment.findNavController(ProcessFragment.this)
-                        .navigate(R.id.currentCustomersFragment, null, options);
+                // Not required for this phase.
+                Toast.makeText(getContext(), "Dispatching is currently unavailable.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "dispatching", Toast.LENGTH_SHORT).show();
+//                editor.putString(ConstantNames.PROCESS, ConstantNames.DISPATCHING);
+//                editor.apply();
+//                NavHostFragment.findNavController(ProcessFragment.this)
+//                        .navigate(R.id.currentCustomersFragment, null, options);
             }
         });
 
@@ -79,11 +84,11 @@ public class ProcessFragment extends Fragment {
         scanItemQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "scan item QR Code", Toast.LENGTH_SHORT).show();
-                editor.putString(ConstantNames.PROCESS, ConstantNames.SCAN_ITEM_QR_CODE);
-                editor.apply();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", sharedPreferences.getString(ConstantNames.TYPE_OF_USER, "user"));
+
                 NavHostFragment.findNavController(ProcessFragment.this)
-                        .navigate(R.id.currentCustomersFragment, null, options);
+                        .navigate(R.id.guestScanFragment, bundle, options);
             }
         });
 
@@ -91,11 +96,13 @@ public class ProcessFragment extends Fragment {
         deliveredBoxes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "delivered boxes", Toast.LENGTH_SHORT).show();
-                editor.putString(ConstantNames.PROCESS, ConstantNames.DELIVERED_BOXES);
-                editor.apply();
-                NavHostFragment.findNavController(ProcessFragment.this)
-                        .navigate(R.id.currentCustomersFragment, null, options);
+                // Not required for this phase.
+                Toast.makeText(getContext(), "Delivered boxes is currently unavailable.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "delivered boxes", Toast.LENGTH_SHORT).show();
+//                editor.putString(ConstantNames.PROCESS, ConstantNames.DELIVERED_BOXES);
+//                editor.apply();
+//                NavHostFragment.findNavController(ProcessFragment.this)
+//                        .navigate(R.id.currentCustomersFragment, null, options);
             }
         });
 

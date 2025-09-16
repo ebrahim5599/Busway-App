@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.BoxStatusModel;
-import com.sta.buswayapp.model.Root;
 
 import java.util.ArrayList;
 

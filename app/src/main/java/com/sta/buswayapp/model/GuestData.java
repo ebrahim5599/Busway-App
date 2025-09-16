@@ -2,53 +2,53 @@ package com.sta.buswayapp.model;
 
 public class GuestData {
 
-    String guestName, guestPhoneNumber, guestCompanyName, guestCompanyProjectName, guestPosition;
+    String name, phoneNumber, company, projectName, position;
 
     public GuestData(String guestName, String guestPhoneNumber, String guestCompanyName, String guestCompanyProjectName, String guestPosition) {
-        this.guestName = guestName;
-        this.guestPhoneNumber = guestPhoneNumber;
-        this.guestCompanyName = guestCompanyName;
-        this.guestCompanyProjectName = guestCompanyProjectName;
-        this.guestPosition = guestPosition;
+        this.name = guestName;
+        this.phoneNumber = guestPhoneNumber;
+        this.company = guestCompanyName;
+        this.projectName = guestCompanyProjectName;
+        this.position = guestPosition;
     }
 
-    public String getGuestName() {
-        return guestName;
+    public String getName() {
+        return name;
     }
 
-    public void setGuestName(String guestName) {
-        this.guestName = guestName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getGuestPhoneNumber() {
-        return guestPhoneNumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setGuestPhoneNumber(String guestPhoneNumber) {
-        this.guestPhoneNumber = guestPhoneNumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getGuestCompanyName() {
-        return guestCompanyName;
+    public String getCompany() {
+        return company;
     }
 
-    public void setGuestCompanyName(String guestCompanyName) {
-        this.guestCompanyName = guestCompanyName;
+    public void setCompany(String company) {
+        this.company = company;
     }
 
-    public String getGuestCompanyProjectName() {
-        return guestCompanyProjectName;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setGuestCompanyProjectName(String guestCompanyProjectName) {
-        this.guestCompanyProjectName = guestCompanyProjectName;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
-    public String getGuestPosition() {
-        return guestPosition;
+    public String getPosition() {
+        return position;
     }
 
-    public void setGuestPosition(String guestPosition) {
-        this.guestPosition = guestPosition;
+    public void setPosition(String position) {
+        this.position = position;
     }
 }
