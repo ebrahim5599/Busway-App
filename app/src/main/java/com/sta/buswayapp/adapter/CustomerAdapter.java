@@ -20,23 +20,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
+import com.sta.buswayapp.model.client.ClientData;
 
 import java.util.ArrayList;
 
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerViewHolder> {
 
     private Context context;
-    private ArrayList<String> customerNamesArrayList;
+    private ArrayList<ClientData> customerNamesArrayList;
     private Fragment fragment;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
-    public CustomerAdapter(Context context, ArrayList<String> customerNames) {
+    public CustomerAdapter(Context context, ArrayList<ClientData> customerNames) {
         this.context = context;
         this.customerNamesArrayList = customerNames;
     }
 
-    public CustomerAdapter(Context context, ArrayList<String> customerNamesArrayList, Fragment fragment) {
+    public CustomerAdapter(Context context, ArrayList<ClientData> customerNamesArrayList, Fragment fragment) {
         this.context = context;
         this.customerNamesArrayList = customerNamesArrayList;
         this.fragment = fragment;
@@ -59,11 +60,11 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
     @Override
     public void onBindViewHolder(@NonNull CustomerAdapter.CustomerViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.customerName.setText(customerNamesArrayList.get(position));
+        holder.customerName.setText(customerNamesArrayList.get(position).name);
         holder.customerNameCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putString(ConstantNames.CLIENT, customerNamesArrayList.get(position));
+                editor.putString(ConstantNames.CLIENT, customerNamesArrayList.get(position).name);
                 editor.apply();
                 Toast.makeText(context, sharedPreferences.getString(ConstantNames.PROCESS, "default"), Toast.LENGTH_SHORT).show();
                 NavHostFragment.findNavController(fragment)

@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/currentCustomersFragment"
-        android:name="com.sta.buswayapp.ui.main.CustomerFragment"
+        android:name="com.sta.buswayapp.ui.main.customer.CustomerFragment"
         android:label="fragment_current_customers"
         tools:layout="@layout/fragment_customer" >
         <action

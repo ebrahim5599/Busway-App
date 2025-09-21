@@ -3,47 +3,59 @@ package com.sta.buswayapp.adapter;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ProjectAdapter extends CustomerAdapter {
+public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder> {
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
     private Fragment fragment;
     private String processName;
+    private Context context;
+    private ArrayList<String> projectSalesOrder;
 
-    public ProjectAdapter(Context context, ArrayList<String> customerNames) {
-        super(context, customerNames);
-    }
-
-    public ProjectAdapter(Context context, ArrayList<String> customerNamesArrayList, Fragment fragment) {
-        super(context, customerNamesArrayList, fragment);
+    public ProjectAdapter(Context context, ArrayList<String> projectSalesOrder, Fragment fragment) {
         this.fragment = fragment;
+        this.context = context;
+        this.projectSalesOrder = projectSalesOrder;
     }
 
     @NonNull
     @Override
-    public CustomerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         sharedPreferences = fragment.getContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
         editor = sharedPreferences.edit();
         processName = sharedPreferences.getString(ConstantNames.PROCESS, "def");
-        return super.onCreateViewHolder(parent, viewType);
+        return new ProjectViewHolder(LayoutInflater.from(context).inflate(R.layout.one_item_container, parent, false));
     }
 
+    NavOptions options = new NavOptions.Builder()
+            .setEnterAnim(R.anim.slide_in_right)
+            .setExitAnim(R.anim.slide_out_left)
+            .setPopEnterAnim(R.anim.slide_in_left)
+            .setPopExitAnim(R.anim.slide_out_right)
+            .build();
+
     @Override
-    public void onBindViewHolder(@NonNull CustomerViewHolder holder, int position, @NonNull List<Object> payloads) {
-        super.onBindViewHolder(holder, position, payloads);
-        holder.customerNameCardView.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(@NonNull ProjectAdapter.ProjectViewHolder holder, int position) {
+        holder.projectSalesOrderTextView.setText(projectSalesOrder.get(position));
+        holder.projectCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (processName.equals(ConstantNames.BOXING)) {
@@ -60,5 +72,22 @@ public class ProjectAdapter extends CustomerAdapter {
                 }
             }
         });
+    }
+
+    @Override
+    public int getItemCount() {
+        return projectSalesOrder.size();
+    }
+
+
+    public static class ProjectViewHolder extends RecyclerView.ViewHolder {
+
+        TextView projectSalesOrderTextView;
+        CardView projectCardView;
+        public ProjectViewHolder(@NonNull View itemView) {
+            super(itemView);
+            projectSalesOrderTextView = itemView.findViewById(R.id.one_item_text_view);
+            projectCardView = itemView.findViewById(R.id.one_item_card_view);
+        }
     }
 }
