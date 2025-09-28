@@ -26,6 +26,9 @@ public class ConstantNames {
     public final static String GUEST_COMPANY = "guest company";
     public final static String GUEST_COMPANY_PROJECT = "guest company project";
     public final static String GUEST_POSITION = "guest position";
+    public final static String PROJECT_NAME = "project name";
+    public final static String SALES_ORDER = "sales order";
+
 
 
 

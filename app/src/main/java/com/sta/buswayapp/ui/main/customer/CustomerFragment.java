@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.sta.buswayapp.R;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 
 public class CustomerFragment extends Fragment {
 
+    private ProgressBar progressBar;
+    private RecyclerView recyclerView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,13 +35,22 @@ public class CustomerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_customer, container, false);
         ArrayList<ClientData> client = new ArrayList<>();
         CustomerAdapter adapter = new CustomerAdapter(getContext(), client, CustomerFragment.this);
+        recyclerView = view.findViewById(R.id.customers_recyclerview);
 
+        progressBar = view.findViewById(R.id.progressBar);
         CustomerViewModel customerViewModel = new ViewModelProvider(CustomerFragment.this).get(CustomerViewModel.class);
+
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+
         customerViewModel.getClientData();
         customerViewModel.clientResponseMutableLiveData.observe(getViewLifecycleOwner(), new Observer<ClientResponse>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(ClientResponse clientResponse) {
+                progressBar.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+
                 if (clientResponse == null){
                     Toast.makeText(getContext(), "Failed to get client data", Toast.LENGTH_SHORT).show();
                 } else {
@@ -48,7 +60,6 @@ public class CustomerFragment extends Fragment {
             }
         });
 
-        RecyclerView recyclerView = view.findViewById(R.id.customers_recyclerview);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

@@ -1,5 +1,7 @@
 package com.sta.buswayapp.ui.main.customer;
 
+import android.view.View;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -12,10 +14,6 @@ import retrofit2.Response;
 
 public class CustomerViewModel extends ViewModel{
     MutableLiveData<ClientResponse> clientResponseMutableLiveData = new MutableLiveData<>();
-
-    public MutableLiveData<ClientResponse> getClientResponseMutableLiveData() {
-        return clientResponseMutableLiveData;
-    }
 
     public void getClientData(){
         DataBuilder.getINSTANCE().getClientData().enqueue(new Callback<ClientResponse>() {

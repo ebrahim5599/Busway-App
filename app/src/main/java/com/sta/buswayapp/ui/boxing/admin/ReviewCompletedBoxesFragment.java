@@ -11,11 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sta.buswayapp.R;
-import com.sta.buswayapp.adapter.CompletedBoxAdapter;
 import com.sta.buswayapp.adapter.CompletedBoxWithCheckboxAdapter;
-import com.sta.buswayapp.adapter.ProjectAdapter;
 import com.sta.buswayapp.model.BoxStatusModel;
-import com.sta.buswayapp.ui.main.ProjectFragment;
 
 import java.util.ArrayList;
 

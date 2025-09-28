@@ -2,6 +2,7 @@ package com.sta.buswayapp.data;
 
 import com.sta.buswayapp.model.GuestData;
 import com.sta.buswayapp.model.client.ClientResponse;
+import com.sta.buswayapp.model.project.ProjectResponse;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -34,6 +35,10 @@ public class DataBuilder {
 
     public Call<ClientResponse> getClientData(){
         return apiInterface.getClientData();
+    }
+
+    public Call<ProjectResponse> getProjectData(String clientID){
+        return apiInterface.getProjectSalesOrder(clientID);
     }
 
 

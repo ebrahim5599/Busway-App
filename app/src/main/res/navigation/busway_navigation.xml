@@ -55,7 +55,7 @@
         tools:layout="@layout/fragment_guest_scan" />
     <fragment
         android:id="@+id/projectFragment"
-        android:name="com.sta.buswayapp.ui.main.ProjectFragment"
+        android:name="com.sta.buswayapp.ui.main.project.ProjectFragment"
         android:label="fragment_project"
         tools:layout="@layout/fragment_project" />
     <fragment

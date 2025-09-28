@@ -12,45 +12,42 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/boxingProcessCustomerName"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Customer: "
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/boxingProcessProjectName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Project Name: "
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/boxingProcessCustomerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Customer: "
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/boxingProcessSalesOrder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Sales Order: "
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/boxingProcessProjectName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Project Name: "
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/boxingInProgress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Boxing in progress"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/boxingProcessSalesOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Sales Order: "
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/scan_bar_code_button"
@@ -60,7 +57,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:backgroundTint="#BDBDBD"
-            android:text="@string/scan_barcode"
+            android:text="Scan box items"
             android:textAllCaps="true"
             android:textColor="@color/black" />
 
@@ -147,8 +144,8 @@
                     android:id="@+id/boxLengthEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:background="@null"
+                    android:gravity="center"
                     android:hint="L"
                     android:padding="8dp"
                     android:textColor="@color/black"
@@ -177,8 +174,8 @@
                     android:id="@+id/boxWidthEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:background="@null"
+                    android:gravity="center"
                     android:hint="W"
                     android:padding="8dp"
                     android:paddingStart="8dp"
@@ -208,8 +205,8 @@
                     android:id="@+id/boxHeightEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:background="@null"
+                    android:gravity="center"
                     android:hint="H"
                     android:padding="8dp"
                     android:paddingStart="8dp"
@@ -226,17 +223,27 @@
             android:text="Box Barcode/RFID"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/scanBoxBarcodeOrRfidButton"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/scanBoxBarcodeOrRfidCardView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_height="86dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="#BDBDBD"
-            android:text="@string/scan_barcode"
-            android:textAllCaps="true"
-            android:textColor="@color/black" />
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <TextView
+                android:id="@+id/scanBoxBarcodeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:text="@string/scan_barcode"
+                android:textColor="@color/black" />
+
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/postAndAddNewBox"

@@ -10,31 +10,40 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/customer_page_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:text="Customers in process" />
+        <TextView
+            android:id="@+id/customer_page_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="Customers in process"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/customers_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
-    <ImageView
-        android:id="@+id/elsewedy_logo"
-        android:layout_width="81dp"
-        android:layout_height="81dp"
-        android:layout_gravity="center"
-        android:scaleType="centerInside"
-        android:src="@drawable/elsewedy_logo"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/customers_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/elsewedy_logo"
+            android:layout_width="81dp"
+            android:layout_height="81dp"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/elsewedy_logo" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

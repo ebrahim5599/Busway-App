@@ -14,17 +14,6 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.sta.buswayapp.R
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [GuestScanFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class GuestScanFragment : Fragment() {
     private lateinit var resultTextView: TextView
     private lateinit var downloadQualityDocs: CardView

@@ -12,52 +12,46 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/boxingProcessCustomerName"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Customer: "
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/boxingProcessProjectName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Project Name: "
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/boxingProcessCustomerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Customer: "
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/boxingProcessSalesOrder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Sales Order: "
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/boxingProcessProjectName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Project Name: "
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/boxingInProgress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Boxing in progress"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/boxingProcessSalesOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sales Order: "
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-       <Button
+        <Button
             android:id="@+id/editBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-           android:layout_marginTop="32dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:backgroundTint="#BDBDBD"
             android:text="Edit Box 2"

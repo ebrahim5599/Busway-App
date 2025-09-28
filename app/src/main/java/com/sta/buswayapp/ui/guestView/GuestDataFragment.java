@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.sta.buswayapp.R;
@@ -28,6 +29,7 @@ public class GuestDataFragment extends Fragment {
     private SharedPreferences.Editor editor;
     private EditText fullNameEditText, companyNameEditText, phoneEditText, projectNameEditText, positionEditText;
     private GuestData guestData;
+    private RelativeLayout loadingOverlay;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +39,7 @@ public class GuestDataFragment extends Fragment {
         sharedPreferences = requireContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
         editor = sharedPreferences.edit();
         GuestDataViewModel guestDataViewModel = new ViewModelProvider(GuestDataFragment.this).get(GuestDataViewModel.class);
+        loadingOverlay = view.findViewById(R.id.loadingOverlay);
 
         fullNameEditText = view.findViewById(R.id.guestNameEditText);
         companyNameEditText = view.findViewById(R.id.guestCompanyNameEditText);
@@ -86,15 +89,20 @@ public class GuestDataFragment extends Fragment {
                     editor.putString(ConstantNames.GUEST_COMPANY_PROJECT, guestData.getProjectName());
                     editor.putString(ConstantNames.GUEST_POSITION, guestData.getPosition());
 
+                    loadingOverlay.setVisibility(View.VISIBLE);
+
                     guestDataViewModel.postNewGuest(guestData);
 
                     editor.apply();
                 }
 
-                // TODO: ---------------------------------------------------------------------
+
                 guestDataViewModel.getGuestDataMutableLiveData().observe(getViewLifecycleOwner(), new Observer<GuestData>() {
                     @Override
                     public void onChanged(GuestData guestData) {
+
+                        loadingOverlay.setVisibility(View.GONE);
+
                         if (guestData == null){
                             Toast.makeText(getContext(), "Failed to save guest data", Toast.LENGTH_SHORT).show();
                         } else {

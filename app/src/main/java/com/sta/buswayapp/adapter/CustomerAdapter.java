@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +32,6 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     private Fragment fragment;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-
-    public CustomerAdapter(Context context, ArrayList<ClientData> customerNames) {
-        this.context = context;
-        this.customerNamesArrayList = customerNames;
-    }
 
     public CustomerAdapter(Context context, ArrayList<ClientData> customerNamesArrayList, Fragment fragment) {
         this.context = context;
@@ -65,13 +61,15 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             @Override
             public void onClick(View v) {
                 editor.putString(ConstantNames.CLIENT, customerNamesArrayList.get(position).name);
-                editor.apply();
                 Toast.makeText(context, sharedPreferences.getString(ConstantNames.PROCESS, "default"), Toast.LENGTH_SHORT).show();
+                Bundle args = new Bundle();
+                args.putInt("clientId", customerNamesArrayList.get(position).id);
+                args.putString("clientName", customerNamesArrayList.get(position).name);
+                editor.apply();
                 NavHostFragment.findNavController(fragment)
-                        .navigate(R.id.projectFragment, null, options);
+                        .navigate(R.id.projectFragment, args, options);
             }
         });
-
 
     }
 
