@@ -13,15 +13,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
-import com.sta.buswayapp.model.item.ItemCode;
-import com.sta.buswayapp.model.project.ProjectData;
+import com.sta.buswayapp.model.item.Item;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapter.ItemsViewHolder> {
 
@@ -30,10 +32,12 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
     private Fragment fragment;
     private String processName;
     private Context context;
-    private ArrayList<ItemCode> itemCodeArrayList;
+    private ArrayList<String> itemCodeArrayList;
+    private ArrayList<Item> wrongItemArrayList;
+    boolean hasError = false;
 
 
-    public ScannedItemsAdapter(Context context, ArrayList<ItemCode> itemCodeArrayList, Fragment fragment) {
+    public ScannedItemsAdapter(Context context, ArrayList<String> itemCodeArrayList, Fragment fragment) {
         this.fragment = fragment;
         this.context = context;
         this.itemCodeArrayList = itemCodeArrayList;
@@ -42,7 +46,7 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
     @NonNull
     @Override
     public ScannedItemsAdapter.ItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        sharedPreferences = fragment.getContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
+        sharedPreferences = fragment.requireContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
         editor = sharedPreferences.edit();
         processName = sharedPreferences.getString(ConstantNames.PROCESS, "def");
         return new ItemsViewHolder(LayoutInflater.from(context).inflate(R.layout.scanned_item_container, parent, false));
@@ -50,9 +54,27 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ScannedItemsAdapter.ItemsViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.itemCodeTextView.setText(itemCodeArrayList.get(position).getCode());
+        String code = itemCodeArrayList.get(position);
+        holder.itemCodeTextView.setText(code);
         holder.cardOrderTextView.setText(String.valueOf((holder.getAdapterPosition() + 1)));
+
+        holder.scannedItemCardView.setStrokeColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.gray));
+        holder.scannedItemCardView.setStrokeWidth(2);
+        holder.itemCodeTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.black));
+
+        if (hasError) {
+            for (Item wrong : wrongItemArrayList) {
+//                if (wrong.index == position) {
+                if (wrong.barcode.equals(code)) {
+                    holder.scannedItemCardView.setStrokeColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error_bg));
+                    holder.scannedItemCardView.setStrokeWidth(4); // thickness of border
+                    holder.itemCodeTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error_bg));
+                    break;
+                }
+            }
+        }
         holder.removeItemIcon.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
                 itemCodeArrayList.remove(position);
@@ -67,7 +89,7 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
     }
 
     public static class ItemsViewHolder extends RecyclerView.ViewHolder {
-        CardView scannedItemCardView;
+        MaterialCardView scannedItemCardView;
         TextView itemCodeTextView, cardOrderTextView;
         ImageView removeItemIcon;
 
@@ -79,5 +101,13 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
             cardOrderTextView = itemView.findViewById(R.id.cardOrder);
 
         }
+    }
+
+    public void setWrongItemArrayList(ArrayList<Item> wrongItemArrayList) {
+        this.wrongItemArrayList = wrongItemArrayList;
+    }
+
+    public void setHasError(boolean hasError) {
+        this.hasError = hasError;
     }
 }

@@ -2,7 +2,12 @@ package com.sta.buswayapp.data;
 
 
 import com.sta.buswayapp.model.GuestData;
+import com.sta.buswayapp.model.box.CurrentBoxResponse;
+import com.sta.buswayapp.model.box.UploadedBoxBody;
+import com.sta.buswayapp.model.box.UploadedBoxResponse;
 import com.sta.buswayapp.model.client.ClientResponse;
+import com.sta.buswayapp.model.item.Root;
+import com.sta.buswayapp.model.item.ValidateItems;
 import com.sta.buswayapp.model.project.ProjectResponse;
 
 import retrofit2.Call;
@@ -20,5 +25,14 @@ public interface APIInterface {
 
     @GET("api/Project/salesOrders")
     Call<ProjectResponse> getProjectSalesOrder(@Query("id") String id);
+
+    @POST("api/Item/ValidateItems")
+    Call<Root> validateItems(@Body ValidateItems validateItems);
+
+    @POST("api/Box/CreateBox")
+    Call<UploadedBoxResponse> storeBoxData(@Body UploadedBoxBody uploadedBoxBody);
+
+    @GET("api/Box/GetNextBoxNumber")
+    Call<CurrentBoxResponse> getBoxNumber(@Query("projectId") String projectId);
 
  }

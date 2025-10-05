@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
-    tools:context=".ui.boxing.worker.AddingNewBoxFragment">
+    tools:context=".ui.boxing.worker.addNewBox.AddingNewBoxFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,15 +72,28 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp">
 
-            <TextView
-                android:id="@+id/boxNumberTextView"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="Box Number 1"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:padding="8dp">
+
+                <ProgressBar
+                    android:id="@+id/boxNumberProgressBar"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/boxNumberTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Loading..."
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </FrameLayout>
 
         </androidx.cardview.widget.CardView>
 

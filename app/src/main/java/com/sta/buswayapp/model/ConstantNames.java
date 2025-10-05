@@ -28,12 +28,9 @@ public class ConstantNames {
     public final static String GUEST_POSITION = "guest position";
     public final static String PROJECT_NAME = "project name";
     public final static String SALES_ORDER = "sales order";
-
-
-
-
-
-
+    public static final String PROJECT_ID = "project id";
+    public static final String ITEMS_LIST_KEY = "itemsListKey";
+    public static final String BOX_NUMBER = "box number";
 
 
 }

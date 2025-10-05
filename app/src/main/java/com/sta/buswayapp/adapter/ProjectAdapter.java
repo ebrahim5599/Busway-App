@@ -63,6 +63,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
             public void onClick(View v) {
                 editor.putString(ConstantNames.PROJECT_NAME, projectSalesOrder.get(position).name);
                 editor.putString(ConstantNames.SALES_ORDER, projectSalesOrder.get(position).salesOrder);
+                editor.putString(ConstantNames.PROJECT_ID, String.valueOf(projectSalesOrder.get(position).id));
                 editor.apply();
 
                 if (processName.equals(ConstantNames.BOXING)) {

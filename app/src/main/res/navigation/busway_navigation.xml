@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/boxingWorkerSideFragment"
-        android:name="com.sta.buswayapp.ui.boxing.worker.AddingNewBoxFragment"
+        android:name="com.sta.buswayapp.ui.boxing.worker.addNewBox.AddingNewBoxFragment"
         android:label="fragment_boxing_worker_side"
         tools:layout="@layout/fragment_adding_new_box" />
 
@@ -65,7 +65,7 @@
         tools:layout="@layout/fragment_new_or_edit_box" />
     <fragment
         android:id="@+id/addingNewItemsFragment"
-        android:name="com.sta.buswayapp.ui.boxing.worker.AddingNewItemsFragment"
+        android:name="com.sta.buswayapp.ui.boxing.worker.addNewItem.AddingNewItemFragment"
         android:label="fragment_adding_new_items"
         tools:layout="@layout/fragment_adding_new_items" />
     <fragment

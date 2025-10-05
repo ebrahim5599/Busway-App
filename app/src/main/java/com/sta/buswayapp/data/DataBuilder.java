@@ -1,7 +1,12 @@
 package com.sta.buswayapp.data;
 
 import com.sta.buswayapp.model.GuestData;
+import com.sta.buswayapp.model.box.CurrentBoxResponse;
+import com.sta.buswayapp.model.box.UploadedBoxBody;
+import com.sta.buswayapp.model.box.UploadedBoxResponse;
 import com.sta.buswayapp.model.client.ClientResponse;
+import com.sta.buswayapp.model.item.Root;
+import com.sta.buswayapp.model.item.ValidateItems;
 import com.sta.buswayapp.model.project.ProjectResponse;
 
 import retrofit2.Call;
@@ -10,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DataBuilder {
     private static final String GUEST_URL = "https://transformsapp.runasp.net/";
-    private APIInterface apiInterface;
+    private final APIInterface apiInterface;
     private static DataBuilder INSTANCE;
 
 
@@ -40,6 +45,20 @@ public class DataBuilder {
     public Call<ProjectResponse> getProjectData(String clientID){
         return apiInterface.getProjectSalesOrder(clientID);
     }
+
+    public Call<CurrentBoxResponse> getBoxNumber(String projectId){
+        return apiInterface.getBoxNumber(projectId);
+    }
+
+    public Call<UploadedBoxResponse> storeBoxData(UploadedBoxBody uploadedBoxBody){
+        return apiInterface.storeBoxData(uploadedBoxBody);
+    }
+
+    public Call<Root> validateItems(ValidateItems validateItems){
+        return apiInterface.validateItems(validateItems);
+    }
+
+
 
 
 }

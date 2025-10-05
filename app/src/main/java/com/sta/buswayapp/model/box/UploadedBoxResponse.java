@@ -1,12 +1,11 @@
-package com.sta.buswayapp.model.client;
+package com.sta.buswayapp.model.box;
 
 import java.util.ArrayList;
 
-public class ClientResponse {
-    public ArrayList<ClientData> data;
+public class UploadedBoxResponse {
+    public ArrayList<UploadedBoxData> data;
     public boolean isSucsess;
     public int status;
     public String message;
     public Object errors;
 }
-
