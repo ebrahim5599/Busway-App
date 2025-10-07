@@ -1,9 +1,11 @@
 package com.sta.buswayapp.data;
 
 import com.sta.buswayapp.model.GuestData;
-import com.sta.buswayapp.model.box.CurrentBoxResponse;
-import com.sta.buswayapp.model.box.UploadedBoxBody;
-import com.sta.buswayapp.model.box.UploadedBoxResponse;
+import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsResponse;
+import com.sta.buswayapp.model.box.admin.completedBox.CompletedBoxResponse;
+import com.sta.buswayapp.model.box.worker.getBoxNum.CurrentBoxResponse;
+import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxBody;
+import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxResponse;
 import com.sta.buswayapp.model.client.ClientResponse;
 import com.sta.buswayapp.model.item.Root;
 import com.sta.buswayapp.model.item.ValidateItems;
@@ -50,12 +52,20 @@ public class DataBuilder {
         return apiInterface.getBoxNumber(projectId);
     }
 
-    public Call<UploadedBoxResponse> storeBoxData(UploadedBoxBody uploadedBoxBody){
+    public Call<CreatedBoxResponse> storeBoxData(CreatedBoxBody uploadedBoxBody){
         return apiInterface.storeBoxData(uploadedBoxBody);
     }
 
     public Call<Root> validateItems(ValidateItems validateItems){
         return apiInterface.validateItems(validateItems);
+    }
+
+    public Call<CompletedBoxResponse> getCompletedBoxes(int projectId){
+        return apiInterface.getCompletedBoxes(projectId);
+    }
+
+    public Call<BoxedItemsResponse> getBoxedItems(int boxId){
+        return apiInterface.getItemsInsideBox(boxId);
     }
 
 

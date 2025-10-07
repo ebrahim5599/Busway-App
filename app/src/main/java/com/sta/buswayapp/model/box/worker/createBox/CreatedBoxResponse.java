@@ -1,9 +1,9 @@
-package com.sta.buswayapp.model.box;
+package com.sta.buswayapp.model.box.worker.createBox;
 
 import java.util.ArrayList;
 
-public class UploadedBoxResponse {
-    public ArrayList<UploadedBoxData> data;
+public class CreatedBoxResponse {
+    public ArrayList<CreatedBoxData> data;
     public boolean isSucsess;
     public int status;
     public String message;

@@ -22,27 +22,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
-import com.sta.buswayapp.model.box.CurrentBoxResponse;
-import com.sta.buswayapp.model.box.UploadedBoxBody;
-import com.sta.buswayapp.ui.guestView.GuestDataFragment;
-import com.sta.buswayapp.ui.guestView.GuestDataViewModel;
+import com.sta.buswayapp.model.box.worker.getBoxNum.CurrentBoxResponse;
+import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxBody;
+import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxResponse;
 
 import java.util.ArrayList;
 
 public class AddingNewBoxFragment extends Fragment {
-    private TextView boxBarcodeTextView, boxNumberTextView;
+    private TextView boxBarcodeTextView, boxNumberTextView, itemInfoTextView;
     private AddingNewBoxViewModel addingNewBoxViewModel;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private ProgressBar progressBar;
     private ArrayList<String> receivedList;
-    private boolean navigateToAddNewBox = false;
+    private String boxBarcodeText, boxLength, boxHeight, boxWidth, boxDimensions;
+    private int projectID;
+    private int boxWeight;
+    private boolean navigateToCustomerFragment = false;
 
 
     private final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
@@ -62,7 +65,9 @@ public class AddingNewBoxFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_adding_new_box, container, false);
-        sharedPreferences = getContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
+        sharedPreferences = requireContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
+        projectID = Integer.parseInt(sharedPreferences.getString(ConstantNames.PROJECT_ID, "0"));
+
         addingNewBoxViewModel = new ViewModelProvider(AddingNewBoxFragment.this).get(AddingNewBoxViewModel.class);
 
         progressBar = view.findViewById(R.id.boxNumberProgressBar);
@@ -70,7 +75,15 @@ public class AddingNewBoxFragment extends Fragment {
         boxBarcodeTextView = view.findViewById(R.id.scanBoxBarcodeTextView);
         TextView customerTextView = view.findViewById(R.id.boxingProcessCustomerName);
         TextView projectTextView = view.findViewById(R.id.boxingProcessProjectName);
+        EditText boxWeightEditText = view.findViewById(R.id.boxWeightEditText);
+
+        EditText boxLengthEditText = view.findViewById(R.id.boxLengthEditText);
+        EditText boxWidthEditText = view.findViewById(R.id.boxWidthEditText);
+        EditText boxHeightEditText = view.findViewById(R.id.boxHeightEditText);
+
         TextView salesOrderTextView = view.findViewById(R.id.boxingProcessSalesOrder);
+        itemInfoTextView = view.findViewById(R.id.itemInfoTextView);
+        itemInfoTextView.setVisibility(View.GONE);
 
         receivedList = new ArrayList<>();
 
@@ -102,10 +115,16 @@ public class AddingNewBoxFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"New Box", Toast.LENGTH_SHORT).show();
-//                addingNewBoxViewModel.createNewBox(new UploadedBoxBody());
-//                navigateToAddNewBox = true;
-                // TODO 2: remove this page data
+                navigateToCustomerFragment = false;
 
+                boxBarcodeText = boxBarcodeTextView.getText().toString();
+                boxWeight = Integer.parseInt(boxWeightEditText.getText().toString());
+                boxLength = boxLengthEditText.getText().toString();
+                boxWidth = boxWidthEditText.getText().toString();
+                boxHeight = boxHeightEditText.getText().toString();
+                boxDimensions = boxLength + "×" + boxWidth + "×" + boxHeight;
+
+                addingNewBoxViewModel.createNewBox(new CreatedBoxBody(boxBarcodeText,"", boxWeight, boxDimensions, projectID, receivedList ));
             }
         });
 
@@ -113,8 +132,34 @@ public class AddingNewBoxFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Finish", Toast.LENGTH_SHORT).show();
-//                addingNewBoxViewModel.createNewBox(new UploadedBoxBody());
-//                navigateToAddNewBox = false;
+                navigateToCustomerFragment = true;
+
+                boxBarcodeText = boxBarcodeTextView.getText().toString();
+                boxWeight = Integer.parseInt(boxWeightEditText.getText().toString());
+                boxLength = boxLengthEditText.getText().toString();
+                boxWidth = boxWidthEditText.getText().toString();
+                boxHeight = boxHeightEditText.getText().toString();
+                boxDimensions = boxLength + "×" + boxWidth + "×" + boxHeight;
+
+                addingNewBoxViewModel.createNewBox(new CreatedBoxBody(boxBarcodeText,"", boxWeight, boxDimensions, projectID, receivedList ));
+            }
+        });
+
+        addingNewBoxViewModel.getUploadedBoxResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<CreatedBoxResponse>() {
+            @Override
+            public void onChanged(CreatedBoxResponse uploadedBoxResponse) {
+                if (uploadedBoxResponse == null) {
+                    Toast.makeText(getContext(), "Failed to create box.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), uploadedBoxResponse.message, Toast.LENGTH_SHORT).show();
+                    if (uploadedBoxResponse.isSucsess){
+                        if (navigateToCustomerFragment){
+                            NavHostFragment.findNavController(AddingNewBoxFragment.this)
+                                    .navigate(R.id.currentCustomersFragment, null, options);
+                        }
+                    }
+
+                }
             }
         });
 
@@ -154,6 +199,7 @@ public class AddingNewBoxFragment extends Fragment {
                         Log.d("Result", "Received: " + list.toString());
                         receivedList.addAll(list);
                         Toast.makeText(getContext(), receivedList.get(0), Toast.LENGTH_SHORT).show();
+                        itemInfoTextView.setVisibility(View.VISIBLE);
                     });
         }
     }

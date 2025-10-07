@@ -122,6 +122,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:hint="@string/kg"
+                android:inputType="number"
                 android:padding="8dp"
                 android:paddingStart="8dp"
                 android:textColor="@color/black"
@@ -133,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Insert Box Dimentions"
+            android:text="Insert Box Dimensions"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -160,6 +161,7 @@
                     android:background="@null"
                     android:gravity="center"
                     android:hint="L"
+                    android:inputType="number"
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
@@ -190,6 +192,7 @@
                     android:background="@null"
                     android:gravity="center"
                     android:hint="W"
+                    android:inputType="number"
                     android:padding="8dp"
                     android:paddingStart="8dp"
                     android:textColor="@color/black"
@@ -221,6 +224,7 @@
                     android:background="@null"
                     android:gravity="center"
                     android:hint="H"
+                    android:inputType="number"
                     android:padding="8dp"
                     android:paddingStart="8dp"
                     android:textColor="@color/black"
@@ -243,7 +247,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
@@ -257,6 +261,21 @@
                 android:textColor="@color/black" />
 
         </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/itemInfoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+            android:drawablePadding="8dp"
+            android:text="@string/the_items_list_is_ready_and_has_been_attached_correctly"
+            android:textColor="@color/black"
+            app:drawableStartCompat="@drawable/round_info_24"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/postAndAddNewBox"

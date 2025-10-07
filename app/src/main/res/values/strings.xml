@@ -5,4 +5,5 @@
     <string name="scan_barcode">Scan Box Barcode</string>
     <string name="guest_login"><u>Guest Login</u></string>
     <string name="kg">KG</string>
+    <string name="the_items_list_is_ready_and_has_been_attached_correctly">The items list is ready and has been attached correctly.</string>
 </resources>

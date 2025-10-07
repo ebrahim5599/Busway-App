@@ -2,9 +2,11 @@ package com.sta.buswayapp.data;
 
 
 import com.sta.buswayapp.model.GuestData;
-import com.sta.buswayapp.model.box.CurrentBoxResponse;
-import com.sta.buswayapp.model.box.UploadedBoxBody;
-import com.sta.buswayapp.model.box.UploadedBoxResponse;
+import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsResponse;
+import com.sta.buswayapp.model.box.admin.completedBox.CompletedBoxResponse;
+import com.sta.buswayapp.model.box.worker.getBoxNum.CurrentBoxResponse;
+import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxBody;
+import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxResponse;
 import com.sta.buswayapp.model.client.ClientResponse;
 import com.sta.buswayapp.model.item.Root;
 import com.sta.buswayapp.model.item.ValidateItems;
@@ -14,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIInterface {
@@ -30,9 +33,17 @@ public interface APIInterface {
     Call<Root> validateItems(@Body ValidateItems validateItems);
 
     @POST("api/Box/CreateBox")
-    Call<UploadedBoxResponse> storeBoxData(@Body UploadedBoxBody uploadedBoxBody);
+    Call<CreatedBoxResponse> storeBoxData(@Body CreatedBoxBody uploadedBoxBody);
 
     @GET("api/Box/GetNextBoxNumber")
     Call<CurrentBoxResponse> getBoxNumber(@Query("projectId") String projectId);
 
+    @GET("api/Box/Admin/Project/{projectId}")
+    Call<CompletedBoxResponse> getCompletedBoxes(@Path("projectId") int projectId);
+
+    @GET("api/Item/ItemsByBoxId")
+    Call<BoxedItemsResponse> getItemsInsideBox(@Query("boxId") int boxID);
+
+//    @GET("/api/Box/project/{projectId}")
+//    Call<> getAllBoxesData(@Path("projectId") int projectId);
  }

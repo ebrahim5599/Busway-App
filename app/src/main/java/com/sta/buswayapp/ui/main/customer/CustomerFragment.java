@@ -54,6 +54,7 @@ public class CustomerFragment extends Fragment {
                 if (clientResponse == null){
                     Toast.makeText(getContext(), "Failed to get client data", Toast.LENGTH_SHORT).show();
                 } else {
+                    client.clear();
                     client.addAll(clientResponse.data);
                     adapter.notifyDataSetChanged();
                 }

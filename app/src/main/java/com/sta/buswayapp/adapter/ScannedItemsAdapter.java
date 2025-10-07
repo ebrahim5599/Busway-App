@@ -21,9 +21,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
 import com.sta.buswayapp.model.item.Item;
-
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapter.ItemsViewHolder> {
 
@@ -64,7 +62,6 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
 
         if (hasError) {
             for (Item wrong : wrongItemArrayList) {
-//                if (wrong.index == position) {
                 if (wrong.barcode.equals(code)) {
                     holder.scannedItemCardView.setStrokeColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error_bg));
                     holder.scannedItemCardView.setStrokeWidth(4); // thickness of border

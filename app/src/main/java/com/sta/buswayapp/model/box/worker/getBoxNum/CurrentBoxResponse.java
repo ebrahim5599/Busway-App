@@ -1,4 +1,4 @@
-package com.sta.buswayapp.model.box;
+package com.sta.buswayapp.model.box.worker.getBoxNum;
 
 public class CurrentBoxResponse {
     public CurrentBoxNumber data;

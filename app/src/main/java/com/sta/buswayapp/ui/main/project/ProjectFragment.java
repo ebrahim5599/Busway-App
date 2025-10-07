@@ -61,6 +61,7 @@ public class ProjectFragment extends Fragment {
                 if (projectResponse == null){
                     Toast.makeText(getContext(), "Failed to get project data", Toast.LENGTH_SHORT).show();
                 } else {
+                    projects.clear();
                     projects.addAll(projectResponse.data);
                     adapter.notifyDataSetChanged();
                 }

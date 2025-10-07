@@ -70,14 +70,14 @@
         tools:layout="@layout/fragment_adding_new_items" />
     <fragment
         android:id="@+id/reviewCompletedItemsFragment"
-        android:name="com.sta.buswayapp.ui.boxing.admin.ReviewCompletedItemsFragment"
+        android:name="com.sta.buswayapp.ui.boxing.admin.scannedItems.ScannedItemsFragment"
         android:label="fragment_review_completed_items"
-        tools:layout="@layout/fragment_review_completed_items" />
+        tools:layout="@layout/fragment_scanned_items" />
     <fragment
         android:id="@+id/reviewCompletedBoxesFragment"
-        android:name="com.sta.buswayapp.ui.boxing.admin.ReviewCompletedBoxesFragment"
+        android:name="com.sta.buswayapp.ui.boxing.admin.completedBoxes.CompletedBoxesFragment"
         android:label="fragment_review_completed_boxes"
-        tools:layout="@layout/fragment_review_completed_boxes" />
+        tools:layout="@layout/fragment_completed_boxes" />
     <fragment
         android:id="@+id/reviewPackedItemsFragment"
         android:name="com.sta.buswayapp.ui.packing.ReviewPackedItemsFragment"

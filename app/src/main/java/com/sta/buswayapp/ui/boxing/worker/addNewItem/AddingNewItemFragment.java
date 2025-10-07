@@ -107,7 +107,7 @@ public class AddingNewItemFragment extends Fragment {
                 if (root == null) {
                     Toast.makeText(getContext(), "Failed to validate items.", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (root.items.size() == 0) {
+                    if (root.isSucsess) {
                         Toast.makeText(getContext(), root.message, Toast.LENGTH_SHORT).show();
                         NavController navController = NavHostFragment.findNavController(AddingNewItemFragment.this);
                         if (navController.getPreviousBackStackEntry() != null) {

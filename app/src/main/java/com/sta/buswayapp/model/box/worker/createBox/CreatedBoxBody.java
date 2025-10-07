@@ -1,8 +1,8 @@
-package com.sta.buswayapp.model.box;
+package com.sta.buswayapp.model.box.worker.createBox;
 
 import java.util.ArrayList;
 
-public class UploadedBoxBody {
+public class CreatedBoxBody {
     public String barcode;
     public String rfidCode;
     public int weight;
@@ -10,7 +10,7 @@ public class UploadedBoxBody {
     public int projectId;
     public ArrayList<String> barCodes;
 
-    public UploadedBoxBody(String barcode, String rfidCode, int weight, String dimension, int projectId, ArrayList<String> barCodes) {
+    public CreatedBoxBody(String barcode, String rfidCode, int weight, String dimension, int projectId, ArrayList<String> barCodes) {
         this.barcode = barcode;
         this.rfidCode = rfidCode;
         this.weight = weight;
