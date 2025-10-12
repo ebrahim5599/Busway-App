@@ -9,15 +9,19 @@ import com.sta.buswayapp.model.box.worker.getBoxNum.CurrentBoxResponse;
 import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxBody;
 import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxResponse;
 import com.sta.buswayapp.model.box.worker.modifyBox.ModifyBoxResponse;
+import com.sta.buswayapp.model.box.worker.modifyItem.ModifyItemResponse;
 import com.sta.buswayapp.model.client.ClientResponse;
 import com.sta.buswayapp.model.item.Root;
 import com.sta.buswayapp.model.item.ValidateItems;
 import com.sta.buswayapp.model.project.ProjectResponse;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -51,4 +55,10 @@ public interface APIInterface {
 
     @GET("api/Box/{BoxId}")
     Call<ReturnedBoxResponse> getBoxData(@Path("BoxId") int boxID);
+
+    @PUT("api/Box/{BoxId}/UpdateItems")
+    Call<ModifyItemResponse> updateBoxItems(
+            @Path("BoxId") int boxId,
+            @Body List<String> itemBarcodes
+    );
  }

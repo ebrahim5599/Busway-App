@@ -30,6 +30,8 @@ public class ConstantNames {
     public final static String SALES_ORDER = "sales order";
     public static final String PROJECT_ID = "project id";
     public static final String ITEMS_LIST_KEY = "itemsListKey";
+    public static final String UPDATED_ITEMS_LIST_KEY = "updatedItemsListKey";
+
     public static final String BOX_NUMBER = "box number";
     public static final String BOX_ID = "box id";
 

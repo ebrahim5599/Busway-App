@@ -39,6 +39,16 @@
             android:textColor="@color/black"
             android:textSize="18sp" />
 
+        <ImageView
+            android:id="@+id/removeItemIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/black"
+            android:src="@drawable/icon_remove"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

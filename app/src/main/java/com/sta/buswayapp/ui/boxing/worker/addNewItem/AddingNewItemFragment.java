@@ -18,12 +18,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sta.buswayapp.R;
 import com.sta.buswayapp.adapter.ReviewItemsAdapter;
 import com.sta.buswayapp.adapter.ScannedItemsAdapter;
 import com.sta.buswayapp.databinding.FragmentAddingNewItemsBinding;
@@ -31,14 +37,19 @@ import com.sta.buswayapp.model.ConstantNames;
 
 import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsData;
 import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsResponse;
+import com.sta.buswayapp.model.box.worker.modifyItem.ModifyItemResponse;
+import com.sta.buswayapp.model.item.Item;
 import com.sta.buswayapp.model.item.Root;
 import com.sta.buswayapp.model.item.ValidateItems;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class AddingNewItemFragment extends Fragment {
 
     private FragmentAddingNewItemsBinding binding;
-    private ArrayList<String> itemCodeArrayList;
+    private ArrayList<String> itemCodeArrayList, updatedItemsList;
     private ArrayList<BoxedItemsData> returnedItemList;
     private ScannedItemsAdapter adapter;
     private ReviewItemsAdapter reviewAdapter;
@@ -52,7 +63,10 @@ public class AddingNewItemFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             if (intent != null && "com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED".equals(intent.getAction())) {
                 String barcodeData = intent.getStringExtra("data");
-                if (itemCodeArrayList != null) {
+                if (itemCodeArrayList != null && editItems) {
+                    returnedItemList.add(new BoxedItemsData(barcodeData));
+                    reviewAdapter.notifyDataSetChanged();
+                } else if (itemCodeArrayList != null && !editItems) {
                     itemCodeArrayList.add(barcodeData);
                     adapter.notifyDataSetChanged();
                 }
@@ -69,7 +83,7 @@ public class AddingNewItemFragment extends Fragment {
         binding = FragmentAddingNewItemsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         Bundle bundle = getArguments();
-        if(bundle != null) {
+        if (bundle != null) {
             editItems = bundle.getBoolean("edit_items_key");
             boxId = bundle.getInt("box_id");
         }
@@ -83,42 +97,57 @@ public class AddingNewItemFragment extends Fragment {
 
         addNewItemViewModel = new ViewModelProvider(AddingNewItemFragment.this).get(AddNewItemViewModel.class);
         itemCodeArrayList = new ArrayList<>();
+        updatedItemsList = new ArrayList<>();
         returnedItemList = new ArrayList<>();
 
-        if (editItems){
-            binding.validateItems.setVisibility(View.GONE);
+        if (editItems) {
+            binding.validateItems.setText("UPDATE ITEMS");
             binding.loadingOverlay.setVisibility(View.VISIBLE);
             addNewItemViewModel.getBoxItems(boxId);
-            reviewAdapter = new ReviewItemsAdapter(getContext(), returnedItemList, AddingNewItemFragment.this);
+            reviewAdapter = new ReviewItemsAdapter(getContext(), returnedItemList, AddingNewItemFragment.this, true);
             binding.completedPackingBoxesRecyclerView.setAdapter(reviewAdapter);
 
-        }else{
+            addNewItemViewModel.getItemResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ModifyItemResponse>() {
+                @SuppressLint("NotifyDataSetChanged")
+                @Override
+                public void onChanged(ModifyItemResponse modifyItemResponse) {
+                    binding.loadingOverlay.setVisibility(View.GONE);
+                    if (modifyItemResponse == null) {
+                        Toast.makeText(getContext(), "Failed to validate items.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (modifyItemResponse.isSucsess) {
+                            Toast.makeText(getContext(), modifyItemResponse.message, Toast.LENGTH_SHORT).show();
+                            NavController navController = NavHostFragment.findNavController(AddingNewItemFragment.this);
+                            if (navController.getPreviousBackStackEntry() != null) {
+                                navController.getPreviousBackStackEntry()
+                                        .getSavedStateHandle()
+                                        .set(ConstantNames.UPDATED_ITEMS_LIST_KEY, updatedItemsList);
+                            }
+                            navController.popBackStack();
+                            reviewAdapter.setHasError(false);
+                        } else {
+                            reviewAdapter.setWrongItemArrayList(modifyItemResponse.errors);
+                            reviewAdapter.setHasError(true);
+                        }
+                        reviewAdapter.notifyDataSetChanged();
+                    }
+
+                }
+            });
+
+        } else {
             adapter = new ScannedItemsAdapter(getContext(), itemCodeArrayList, AddingNewItemFragment.this);
             binding.completedPackingBoxesRecyclerView.setAdapter(adapter);
-
         }
         binding.completedPackingBoxesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.validateItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.loadingOverlay.setVisibility(View.VISIBLE);
-                addNewItemViewModel.validateBoxItems(new ValidateItems(projectID, itemCodeArrayList));
-            }
-        });
-
-        addNewItemViewModel.getBoxedItemsResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<BoxedItemsResponse>() {
-            @Override
-            public void onChanged(BoxedItemsResponse boxedItemsResponse) {
-                binding.loadingOverlay.setVisibility(View.GONE);
-                binding.completedPackingBoxesRecyclerView.setVisibility(View.VISIBLE);
-                if (boxedItemsResponse == null){
-                    Toast.makeText(getContext(), "Failed to get the boxed items.", Toast.LENGTH_SHORT).show();
+                if (editItems) {
+                    addNewItemViewModel.updateItemsList(boxId, updatedItemsList);
                 } else {
-                    Toast.makeText(getContext(), boxedItemsResponse.message, Toast.LENGTH_SHORT).show();
-                    if (boxedItemsResponse.isSucsess){
-                        returnedItemList.addAll(boxedItemsResponse.data);
-                        reviewAdapter.notifyDataSetChanged();
-                    }
+                    addNewItemViewModel.validateBoxItems(new ValidateItems(projectID, itemCodeArrayList));
                 }
             }
         });
@@ -150,7 +179,23 @@ public class AddingNewItemFragment extends Fragment {
             }
         });
 
-
+        addNewItemViewModel.getBoxedItemsResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<BoxedItemsResponse>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChanged(BoxedItemsResponse boxedItemsResponse) {
+                binding.loadingOverlay.setVisibility(View.GONE);
+                binding.completedPackingBoxesRecyclerView.setVisibility(View.VISIBLE);
+                if (boxedItemsResponse == null) {
+                    Toast.makeText(getContext(), "Failed to get the boxed items.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), boxedItemsResponse.message, Toast.LENGTH_SHORT).show();
+                    if (boxedItemsResponse.isSucsess) {
+                        returnedItemList.addAll(boxedItemsResponse.data);
+                        reviewAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
 
         return view;
     }

@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel;
 
 import com.sta.buswayapp.data.DataBuilder;
 import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsResponse;
+import com.sta.buswayapp.model.box.worker.modifyItem.ModifyItemResponse;
 import com.sta.buswayapp.model.item.Root;
 import com.sta.buswayapp.model.item.ValidateItems;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -17,7 +20,8 @@ public class AddNewItemViewModel extends ViewModel {
 
     private final MutableLiveData<Root> validationResponseMutableLiveData = new MutableLiveData<>();
 
-    MutableLiveData<BoxedItemsResponse> boxedItemsResponseMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<BoxedItemsResponse> boxedItemsResponseMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ModifyItemResponse> itemResponseMutableLiveData = new MutableLiveData<>();
 
     public MutableLiveData<BoxedItemsResponse> getBoxedItemsResponseMutableLiveData() {
         return boxedItemsResponseMutableLiveData;
@@ -25,6 +29,10 @@ public class AddNewItemViewModel extends ViewModel {
 
     public MutableLiveData<Root> getResponseMutableLiveData() {
         return validationResponseMutableLiveData;
+    }
+
+    public MutableLiveData<ModifyItemResponse> getItemResponseMutableLiveData() {
+        return itemResponseMutableLiveData;
     }
 
     public void validateBoxItems(ValidateItems validateItems) {
@@ -37,6 +45,20 @@ public class AddNewItemViewModel extends ViewModel {
             @Override
             public void onFailure(Call<Root> call, Throwable t) {
                 validationResponseMutableLiveData.setValue(null);
+            }
+        });
+    }
+
+    public void updateItemsList(int boxId, ArrayList<String> barcodes){
+        DataBuilder.getINSTANCE().updateBoxItems(boxId, barcodes).enqueue(new Callback<ModifyItemResponse>() {
+            @Override
+            public void onResponse(Call<ModifyItemResponse> call, Response<ModifyItemResponse> response) {
+                itemResponseMutableLiveData.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ModifyItemResponse> call, Throwable t) {
+                itemResponseMutableLiveData.setValue(null);
             }
         });
     }

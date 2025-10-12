@@ -8,10 +8,13 @@ import com.sta.buswayapp.model.box.worker.getBoxNum.CurrentBoxResponse;
 import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxBody;
 import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxResponse;
 import com.sta.buswayapp.model.box.worker.modifyBox.ModifyBoxResponse;
+import com.sta.buswayapp.model.box.worker.modifyItem.ModifyItemResponse;
 import com.sta.buswayapp.model.client.ClientResponse;
 import com.sta.buswayapp.model.item.Root;
 import com.sta.buswayapp.model.item.ValidateItems;
 import com.sta.buswayapp.model.project.ProjectResponse;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -78,7 +81,9 @@ public class DataBuilder {
         return apiInterface.getBoxData(boxId);
     }
 
-
+    public Call<ModifyItemResponse> updateBoxItems(int boxId, ArrayList<String> barcodes){
+        return apiInterface.updateBoxItems(boxId, barcodes);
+    }
 
 
 }

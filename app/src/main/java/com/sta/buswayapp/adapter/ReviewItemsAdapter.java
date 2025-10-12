@@ -20,6 +20,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
 import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsData;
+import com.sta.buswayapp.model.box.worker.modifyItem.ModifyItemData;
 import com.sta.buswayapp.model.item.Item;
 
 import java.util.ArrayList;
@@ -30,12 +31,22 @@ public class ReviewItemsAdapter extends RecyclerView.Adapter<ReviewItemsAdapter.
     private Fragment fragment;
     private Context context;
     private ArrayList<BoxedItemsData> itemCodeArrayList;
+    private ArrayList<ModifyItemData> wrongItemArrayList;
+    private boolean editItemsFlag = false;
+    boolean hasError = false;
 
 
     public ReviewItemsAdapter(Context context, ArrayList<BoxedItemsData> itemCodeArrayList, Fragment fragment) {
         this.fragment = fragment;
         this.context = context;
         this.itemCodeArrayList = itemCodeArrayList;
+    }
+
+    public ReviewItemsAdapter(Context context , ArrayList<BoxedItemsData> itemCodeArrayList, Fragment fragment, boolean editItemsFlag) {
+        this.fragment = fragment;
+        this.context = context;
+        this.itemCodeArrayList = itemCodeArrayList;
+        this.editItemsFlag = editItemsFlag;
     }
 
     @NonNull
@@ -50,6 +61,29 @@ public class ReviewItemsAdapter extends RecyclerView.Adapter<ReviewItemsAdapter.
         String code = itemCodeArrayList.get(position).barcode;
         holder.itemCodeTextView.setText(code);
         holder.cardOrderTextView.setText(String.valueOf((holder.getAdapterPosition() + 1)));
+
+        if (hasError) {
+            for (ModifyItemData wrong : wrongItemArrayList) {
+                if (wrong.barcode.equals(code)) {
+                    holder.scannedItemCardView.setStrokeColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error_bg));
+                    holder.scannedItemCardView.setStrokeWidth(4); // thickness of border
+                    holder.itemCodeTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error_bg));
+                    break;
+                }
+            }
+        }
+
+        if (editItemsFlag){
+            holder.removeItemIcon.setVisibility(View.VISIBLE);
+            holder.removeItemIcon.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("NotifyDataSetChanged")
+                @Override
+                public void onClick(View v) {
+                    itemCodeArrayList.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
+        }
     }
 
     @Override
@@ -67,8 +101,17 @@ public class ReviewItemsAdapter extends RecyclerView.Adapter<ReviewItemsAdapter.
             scannedItemCardView = itemView.findViewById(R.id.itemCodeCardView);
             itemCodeTextView = itemView.findViewById(R.id.itemCodeTextView);
             cardOrderTextView = itemView.findViewById(R.id.cardOrder);
+            removeItemIcon = itemView.findViewById(R.id.removeItemIcon);
 
         }
+    }
+
+    public void setWrongItemArrayList(ArrayList<ModifyItemData> wrongItemArrayList) {
+        this.wrongItemArrayList = wrongItemArrayList;
+    }
+
+    public void setHasError(boolean hasError) {
+        this.hasError = hasError;
     }
 
 }

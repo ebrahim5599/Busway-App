@@ -246,9 +246,7 @@ public class AddingNewBoxFragment extends Fragment {
 
             handle.<ArrayList<String>>getLiveData(ConstantNames.ITEMS_LIST_KEY)
                     .observe(getViewLifecycleOwner(), list -> {
-                        Log.d("Result", "Received: " + list.toString());
                         receivedList.addAll(list);
-                        Toast.makeText(getContext(), receivedList.get(0), Toast.LENGTH_SHORT).show();
                         itemInfoTextView.setVisibility(View.VISIBLE);
                     });
         }
