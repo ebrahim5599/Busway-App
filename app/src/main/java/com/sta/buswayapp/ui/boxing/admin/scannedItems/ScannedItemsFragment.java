@@ -50,8 +50,8 @@ public class ScannedItemsFragment extends Fragment {
             scannedItemsViewModel.getScannedItems(boxId);
             binding.boxNumberTextView.setText("Box " + boxNumber);
         }
-        binding.projectNameTextView.setText(sharedPreferences.getString(ConstantNames.PROJECT_NAME, ""));
-        binding.salesOrderTextField.setText(sharedPreferences.getString(ConstantNames.SALES_ORDER, ""));
+        binding.projectNameTextView.setText("Project: " + sharedPreferences.getString(ConstantNames.PROJECT_NAME, ""));
+        binding.salesOrderTextField.setText("Sales order: " + sharedPreferences.getString(ConstantNames.SALES_ORDER, ""));
 
         ReviewItemsAdapter adapter = new ReviewItemsAdapter(getContext(), itemCodeArrayList, ScannedItemsFragment.this);
         binding.completedItemsRecyclerView.setAdapter(adapter);

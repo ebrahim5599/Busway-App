@@ -1,11 +1,13 @@
 package com.sta.buswayapp.data;
 
 import com.sta.buswayapp.model.GuestData;
+import com.sta.buswayapp.model.box.admin.ReturnedBox.ReturnedBoxResponse;
 import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsResponse;
 import com.sta.buswayapp.model.box.admin.completedBox.CompletedBoxResponse;
 import com.sta.buswayapp.model.box.worker.getBoxNum.CurrentBoxResponse;
 import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxBody;
 import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxResponse;
+import com.sta.buswayapp.model.box.worker.modifyBox.ModifyBoxResponse;
 import com.sta.buswayapp.model.client.ClientResponse;
 import com.sta.buswayapp.model.item.Root;
 import com.sta.buswayapp.model.item.ValidateItems;
@@ -66,6 +68,14 @@ public class DataBuilder {
 
     public Call<BoxedItemsResponse> getBoxedItems(int boxId){
         return apiInterface.getItemsInsideBox(boxId);
+    }
+
+    public Call<ModifyBoxResponse> getModifiedBoxes(int projectId){
+        return apiInterface.getAllBoxesNeedToModify(projectId);
+    }
+
+    public Call<ReturnedBoxResponse> getReturnedBoxData(int boxId){
+        return apiInterface.getBoxData(boxId);
     }
 
 

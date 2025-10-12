@@ -47,26 +47,41 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/editBox"
+            android:id="@+id/addNewBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:backgroundTint="#BDBDBD"
-            android:text="Edit Box 2"
-            android:textColor="@color/black" />
-
-        <Button
-            android:id="@+id/addNewBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="32dp"
-            android:backgroundTint="#BDBDBD"
             android:text="New Box"
             android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/returnedBoxesTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textStyle="bold"
+            android:text="Returned Boxes"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/returnedBoxesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/elsewedy_logo"

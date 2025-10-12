@@ -10,6 +10,7 @@
     android:layout_margin="8dp">
 
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
@@ -30,7 +31,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="Completed"
             android:textColor="@color/black"
             android:textSize="18sp"/>
     </LinearLayout>

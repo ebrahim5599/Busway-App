@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
+import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsData;
 import com.sta.buswayapp.model.item.Item;
 import java.util.ArrayList;
 
@@ -31,6 +32,8 @@ public class ScannedItemsAdapter extends RecyclerView.Adapter<ScannedItemsAdapte
     private String processName;
     private Context context;
     private ArrayList<String> itemCodeArrayList;
+    private ArrayList<BoxedItemsData> returnedItemList;
+
     private ArrayList<Item> wrongItemArrayList;
     boolean hasError = false;
 

@@ -18,35 +18,33 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sta.buswayapp.R;
+import com.sta.buswayapp.adapter.ReviewItemsAdapter;
 import com.sta.buswayapp.adapter.ScannedItemsAdapter;
+import com.sta.buswayapp.databinding.FragmentAddingNewItemsBinding;
 import com.sta.buswayapp.model.ConstantNames;
 
-import com.sta.buswayapp.model.item.Item;
+import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsData;
+import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsResponse;
 import com.sta.buswayapp.model.item.Root;
 import com.sta.buswayapp.model.item.ValidateItems;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class AddingNewItemFragment extends Fragment {
 
+    private FragmentAddingNewItemsBinding binding;
     private ArrayList<String> itemCodeArrayList;
+    private ArrayList<BoxedItemsData> returnedItemList;
     private ScannedItemsAdapter adapter;
+    private ReviewItemsAdapter reviewAdapter;
     private AddNewItemViewModel addNewItemViewModel;
-    private RelativeLayout loadingOverlay;
+    private boolean editItems = false;
+    private int boxId;
 
     private final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
         @SuppressLint("NotifyDataSetChanged")
@@ -68,34 +66,60 @@ public class AddingNewItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_adding_new_items, container, false);
+        binding = FragmentAddingNewItemsBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            editItems = bundle.getBoolean("edit_items_key");
+            boxId = bundle.getInt("box_id");
+        }
+        Toast.makeText(getContext(), editItems + "", Toast.LENGTH_SHORT).show();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
-        Button validateItemsButton = view.findViewById(R.id.validateItems);
-        loadingOverlay = view.findViewById(R.id.loadingOverlay);
-
-        TextView projectTextView = view.findViewById(R.id.projectNameTextView);
-        TextView salesOrderTextView = view.findViewById(R.id.projectSalesOrderTextView);
-        TextView boxNumberTextView = view.findViewById(R.id.boxNumberTextView);
-
-        projectTextView.setText("Project: " + sharedPreferences.getString(ConstantNames.PROJECT_NAME, "STA 1"));
-        salesOrderTextView.setText("Sales order: " + sharedPreferences.getString(ConstantNames.SALES_ORDER, "99915050"));
-        boxNumberTextView.setText("Box No.: " + sharedPreferences.getInt(ConstantNames.BOX_NUMBER, 1));
-
         int projectID = Integer.parseInt(sharedPreferences.getString(ConstantNames.PROJECT_ID, "0"));
+
+        binding.projectNameTextView.setText("Project: " + sharedPreferences.getString(ConstantNames.PROJECT_NAME, "STA 1"));
+        binding.projectSalesOrderTextView.setText("Sales order: " + sharedPreferences.getString(ConstantNames.SALES_ORDER, "99915050"));
+        binding.boxNumberTextView.setText("Box No.: " + sharedPreferences.getInt(ConstantNames.BOX_NUMBER, 1));
 
         addNewItemViewModel = new ViewModelProvider(AddingNewItemFragment.this).get(AddNewItemViewModel.class);
         itemCodeArrayList = new ArrayList<>();
+        returnedItemList = new ArrayList<>();
 
-        adapter = new ScannedItemsAdapter(getContext(), itemCodeArrayList, AddingNewItemFragment.this);
+        if (editItems){
+            binding.validateItems.setVisibility(View.GONE);
+            binding.loadingOverlay.setVisibility(View.VISIBLE);
+            addNewItemViewModel.getBoxItems(boxId);
+            reviewAdapter = new ReviewItemsAdapter(getContext(), returnedItemList, AddingNewItemFragment.this);
+            binding.completedPackingBoxesRecyclerView.setAdapter(reviewAdapter);
 
-        RecyclerView recyclerView = view.findViewById(R.id.completedPackingBoxesRecyclerView);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        validateItemsButton.setOnClickListener(new View.OnClickListener() {
+        }else{
+            adapter = new ScannedItemsAdapter(getContext(), itemCodeArrayList, AddingNewItemFragment.this);
+            binding.completedPackingBoxesRecyclerView.setAdapter(adapter);
+
+        }
+        binding.completedPackingBoxesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.validateItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingOverlay.setVisibility(View.VISIBLE);
+                binding.loadingOverlay.setVisibility(View.VISIBLE);
                 addNewItemViewModel.validateBoxItems(new ValidateItems(projectID, itemCodeArrayList));
+            }
+        });
+
+        addNewItemViewModel.getBoxedItemsResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<BoxedItemsResponse>() {
+            @Override
+            public void onChanged(BoxedItemsResponse boxedItemsResponse) {
+                binding.loadingOverlay.setVisibility(View.GONE);
+                binding.completedPackingBoxesRecyclerView.setVisibility(View.VISIBLE);
+                if (boxedItemsResponse == null){
+                    Toast.makeText(getContext(), "Failed to get the boxed items.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), boxedItemsResponse.message, Toast.LENGTH_SHORT).show();
+                    if (boxedItemsResponse.isSucsess){
+                        returnedItemList.addAll(boxedItemsResponse.data);
+                        reviewAdapter.notifyDataSetChanged();
+                    }
+                }
             }
         });
 
@@ -103,7 +127,7 @@ public class AddingNewItemFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(Root root) {
-                loadingOverlay.setVisibility(View.GONE);
+                binding.loadingOverlay.setVisibility(View.GONE);
                 if (root == null) {
                     Toast.makeText(getContext(), "Failed to validate items.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -125,6 +149,8 @@ public class AddingNewItemFragment extends Fragment {
                 }
             }
         });
+
+
 
         return view;
     }

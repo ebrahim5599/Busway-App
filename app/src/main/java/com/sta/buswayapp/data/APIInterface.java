@@ -2,11 +2,13 @@ package com.sta.buswayapp.data;
 
 
 import com.sta.buswayapp.model.GuestData;
+import com.sta.buswayapp.model.box.admin.ReturnedBox.ReturnedBoxResponse;
 import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsResponse;
 import com.sta.buswayapp.model.box.admin.completedBox.CompletedBoxResponse;
 import com.sta.buswayapp.model.box.worker.getBoxNum.CurrentBoxResponse;
 import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxBody;
 import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxResponse;
+import com.sta.buswayapp.model.box.worker.modifyBox.ModifyBoxResponse;
 import com.sta.buswayapp.model.client.ClientResponse;
 import com.sta.buswayapp.model.item.Root;
 import com.sta.buswayapp.model.item.ValidateItems;
@@ -44,6 +46,9 @@ public interface APIInterface {
     @GET("api/Item/ItemsByBoxId")
     Call<BoxedItemsResponse> getItemsInsideBox(@Query("boxId") int boxID);
 
-//    @GET("/api/Box/project/{projectId}")
-//    Call<> getAllBoxesData(@Path("projectId") int projectId);
+    @GET("api/Box/project/{projectId}/ModifiedBoxes")
+    Call<ModifyBoxResponse> getAllBoxesNeedToModify(@Path("projectId") int projectId);
+
+    @GET("api/Box/{BoxId}")
+    Call<ReturnedBoxResponse> getBoxData(@Path("BoxId") int boxID);
  }

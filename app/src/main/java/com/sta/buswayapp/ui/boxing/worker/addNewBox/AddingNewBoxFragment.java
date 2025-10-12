@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
+import com.sta.buswayapp.model.box.admin.ReturnedBox.ReturnedBoxResponse;
 import com.sta.buswayapp.model.box.worker.getBoxNum.CurrentBoxResponse;
 import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxBody;
 import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxResponse;
@@ -46,6 +48,8 @@ public class AddingNewBoxFragment extends Fragment {
     private int projectID;
     private int boxWeight;
     private boolean navigateToCustomerFragment = false;
+    private boolean editItemsFlag = false;
+    private int boxId;
 
 
     private final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
@@ -67,9 +71,9 @@ public class AddingNewBoxFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_adding_new_box, container, false);
         sharedPreferences = requireContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
         projectID = Integer.parseInt(sharedPreferences.getString(ConstantNames.PROJECT_ID, "0"));
-
         addingNewBoxViewModel = new ViewModelProvider(AddingNewBoxFragment.this).get(AddingNewBoxViewModel.class);
 
+        Button scanItemsButton = view.findViewById(R.id.scan_bar_code_button);
         progressBar = view.findViewById(R.id.boxNumberProgressBar);
         boxNumberTextView = view.findViewById(R.id.boxNumberTextView);
         boxBarcodeTextView = view.findViewById(R.id.scanBoxBarcodeTextView);
@@ -101,17 +105,20 @@ public class AddingNewBoxFragment extends Fragment {
                 .setPopExitAnim(R.anim.slide_out_right)
                 .build();
 
-        view.findViewById(R.id.scan_bar_code_button).setOnClickListener(new View.OnClickListener() {
+        scanItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"SCAN", Toast.LENGTH_SHORT).show();
+                Bundle args = new Bundle();
+                args.putBoolean("edit_items_key", editItemsFlag);
+                args.putInt("box_id", boxId);
                 NavHostFragment.findNavController(AddingNewBoxFragment.this)
-                        .navigate(R.id.addingNewItemsFragment, null, options);
+                        .navigate(R.id.addingNewItemsFragment, args, options);
             }
         });
 
-
-        view.findViewById(R.id.postAndAddNewBox).setOnClickListener(new View.OnClickListener() {
+        Button postAndAddNewBoxButton = view.findViewById(R.id.postAndAddNewBox);
+        postAndAddNewBoxButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"New Box", Toast.LENGTH_SHORT).show();
@@ -128,7 +135,8 @@ public class AddingNewBoxFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.finishBoxing).setOnClickListener(new View.OnClickListener() {
+        Button finishBox = view.findViewById(R.id.finishBoxing);
+        finishBox.findViewById(R.id.finishBoxing).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Finish", Toast.LENGTH_SHORT).show();
@@ -152,7 +160,7 @@ public class AddingNewBoxFragment extends Fragment {
                     Toast.makeText(getContext(), "Failed to create box.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), uploadedBoxResponse.message, Toast.LENGTH_SHORT).show();
-                    if (uploadedBoxResponse.isSucsess){
+                    if (uploadedBoxResponse.isSuccess){
                         if (navigateToCustomerFragment){
                             NavHostFragment.findNavController(AddingNewBoxFragment.this)
                                     .navigate(R.id.currentCustomersFragment, null, options);
@@ -163,6 +171,64 @@ public class AddingNewBoxFragment extends Fragment {
             }
         });
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            boxId = bundle.getInt("boxId");
+            editItemsFlag = true;
+            scanItemsButton.setText("Show Box Items");
+            finishBox.setVisibility(View.GONE);
+            postAndAddNewBoxButton.setVisibility(View.GONE);
+            Toast.makeText(getContext(), "BOX ID: " + boxId, Toast.LENGTH_SHORT).show();
+            addingNewBoxViewModel.returnedBoxesData(boxId);
+            addingNewBoxViewModel.getReturnedBoxResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ReturnedBoxResponse>() {
+                @Override
+                public void onChanged(ReturnedBoxResponse returnedBoxResponse) {
+                    progressBar.setVisibility(View.GONE);
+                    boxNumberTextView.setVisibility(View.VISIBLE);
+
+                    if (returnedBoxResponse == null) {
+                        Toast.makeText(getContext(), "Failed to get box data.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (returnedBoxResponse.isSucsess){
+                            boxNumberTextView.setText("Box No. " + returnedBoxResponse.data.boxNumber);
+                            boxWeightEditText.setText(String.valueOf(returnedBoxResponse.data.weight));
+                            boxWeightEditText.setEnabled(false);
+                            if (returnedBoxResponse.data.dimension.contains("×")){
+                                String[] dimensions = returnedBoxResponse.data.dimension.split("×");
+                                boxLengthEditText.setText(dimensions[0]);
+                                boxLengthEditText.setEnabled(false);
+                                boxWidthEditText.setText(dimensions[1]);
+                                boxWidthEditText.setEnabled(false);
+                                boxHeightEditText.setText(dimensions[2]);
+                                boxHeightEditText.setEnabled(false);
+                            }
+                            boxBarcodeTextView.setText(returnedBoxResponse.data.barCode);
+                        }
+
+                    }
+                }
+            });
+        } else {
+            editItemsFlag = false;
+
+            addingNewBoxViewModel.getCurrentBoxNumber(sharedPreferences.getString(ConstantNames.PROJECT_ID, "0"));
+            addingNewBoxViewModel.getBoxResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<CurrentBoxResponse>() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onChanged(CurrentBoxResponse currentBoxResponse) {
+                    progressBar.setVisibility(View.GONE);
+                    boxNumberTextView.setVisibility(View.VISIBLE);
+                    if (currentBoxResponse == null){
+                        boxNumberTextView.setText("Failed to get box number");
+                    } else {
+                        int boxNumber = currentBoxResponse.data.boxNumber;
+                        boxNumberTextView.setText("Box No. " + boxNumber);
+//                    editor.putInt(ConstantNames.BOX_NUMBER, boxNumber);
+//                    editor.apply();
+                    }
+                }
+            });
+        }
         return view;
     }
 
@@ -171,23 +237,7 @@ public class AddingNewBoxFragment extends Fragment {
         super.onResume();
         IntentFilter filter = new IntentFilter("com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED");
         requireContext().registerReceiver(scanReceiver, filter);
-        addingNewBoxViewModel.getCurrentBoxNumber(sharedPreferences.getString(ConstantNames.PROJECT_ID, "0"));
-        addingNewBoxViewModel.getBoxResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<CurrentBoxResponse>() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onChanged(CurrentBoxResponse currentBoxResponse) {
-                progressBar.setVisibility(View.GONE);
-                boxNumberTextView.setVisibility(View.VISIBLE);
-                if (currentBoxResponse == null){
-                    boxNumberTextView.setText("Failed to get box number");
-                } else {
-                    int boxNumber = currentBoxResponse.data.boxNumber;
-                    boxNumberTextView.setText("Box No. " + boxNumber);
-//                    editor.putInt(ConstantNames.BOX_NUMBER, boxNumber);
-//                    editor.apply();
-                }
-            }
-        });
+
 
         NavController navController = NavHostFragment.findNavController(this);
 
