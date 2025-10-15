@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/packingSupervisorSideFragment"
-        android:name="com.sta.buswayapp.ui.packing.PackingSupervisorSideFragment"
+        android:name="com.sta.buswayapp.ui.packing.PackingBoxesFragment"
         android:label="fragment_packing_supervisor_side"
         tools:layout="@layout/fragment_packing_supervisor_side" />
     <fragment
@@ -78,10 +78,6 @@
         android:name="com.sta.buswayapp.ui.boxing.admin.completedBoxes.CompletedBoxesFragment"
         android:label="fragment_review_completed_boxes"
         tools:layout="@layout/fragment_completed_boxes" />
-    <fragment
-        android:id="@+id/reviewPackedItemsFragment"
-        android:name="com.sta.buswayapp.ui.packing.ReviewPackedItemsFragment"
-        android:label="fragment_review_packed_items"
-        tools:layout="@layout/fragment_review_packed_items" />
+
 
 </navigation>

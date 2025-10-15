@@ -20,15 +20,18 @@ import android.widget.Toast;
 import com.sta.buswayapp.adapter.CompletedBoxAdapter;
 import com.sta.buswayapp.databinding.FragmentCompletedBoxesBinding;
 import com.sta.buswayapp.model.ConstantNames;
-import com.sta.buswayapp.model.box.admin.completedBox.CompletedBoxData;
-import com.sta.buswayapp.model.box.admin.completedBox.CompletedBoxResponse;
+import com.sta.buswayapp.model.boxing.box.admin.SubmittedBoxes;
+import com.sta.buswayapp.model.boxing.box.admin.completedBox.CompletedBoxData;
+import com.sta.buswayapp.model.boxing.box.admin.completedBox.CompletedBoxResponse;
 
 import java.util.ArrayList;
 
 public class CompletedBoxesFragment extends Fragment {
 
     private FragmentCompletedBoxesBinding binding;
+    private CompletedBoxesViewModel completedBoxesViewModel;
     private CompletedBoxAdapter adapter;
+    private int projectId;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,9 +39,9 @@ public class CompletedBoxesFragment extends Fragment {
         binding = FragmentCompletedBoxesBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        CompletedBoxesViewModel completedBoxesViewModel = new ViewModelProvider(this).get(CompletedBoxesViewModel.class);
+        completedBoxesViewModel = new ViewModelProvider(this).get(CompletedBoxesViewModel.class);
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
-        int projectId = Integer.parseInt(sharedPreferences.getString(ConstantNames.PROJECT_ID, "0"));
+        projectId = Integer.parseInt(sharedPreferences.getString(ConstantNames.PROJECT_ID, "0"));
         binding.customerName.setText(sharedPreferences.getString(ConstantNames.CLIENT, ""));
 
 
@@ -70,6 +73,44 @@ public class CompletedBoxesFragment extends Fragment {
             }
         });
 
+        binding.submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Integer> selectedIds = adapter.getSelectedBoxIds();
+                if (selectedIds.isEmpty()) {
+                    Toast.makeText(getContext(), "No boxes selected", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Selected IDs: " + selectedIds, Toast.LENGTH_SHORT).show();
+                    completedBoxesViewModel.submitCompletedBoxesByAdmin(selectedIds);
+                    binding.loadingOverlay.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        completedBoxesViewModel.getSubmittedBoxesMutableLiveData().observe(getViewLifecycleOwner(), new Observer<SubmittedBoxes>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChanged(SubmittedBoxes submittedBoxes) {
+                binding.loadingOverlay.setVisibility(View.GONE);
+                if (submittedBoxes == null){
+                    Toast.makeText(getContext(), "Failed to submit boxes.", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getContext(), submittedBoxes.message, Toast.LENGTH_SHORT).show();
+                    if (submittedBoxes.isSucsess){
+                        completedBoxesViewModel.getCompletedBoxes(projectId);
+                        adapter.clearSelections();
+                    }
+                }
+            }
+        });
+
         return view;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 }

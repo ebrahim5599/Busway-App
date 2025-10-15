@@ -19,9 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
-import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsData;
-import com.sta.buswayapp.model.box.worker.modifyItem.ModifyItemData;
-import com.sta.buswayapp.model.item.Item;
+import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsData;
+import com.sta.buswayapp.model.boxing.item.modifyItem.ModifyItemData;
 
 import java.util.ArrayList;
 

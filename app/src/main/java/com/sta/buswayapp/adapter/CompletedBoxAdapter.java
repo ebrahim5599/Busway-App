@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
-import com.sta.buswayapp.model.box.admin.completedBox.CompletedBoxData;
+import com.sta.buswayapp.model.boxing.box.admin.completedBox.CompletedBoxData;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,9 @@ public class CompletedBoxAdapter extends RecyclerView.Adapter<CompletedBoxAdapte
 
     private final Context context;
     private final ArrayList<CompletedBoxData> boxStatusModelArrayList;
-    private Fragment fragment;
+    private final Fragment fragment;
+    private final ArrayList<Integer> selectedBoxIds = new ArrayList<>();
+
     NavOptions options = new NavOptions.Builder()
             .setEnterAnim(R.anim.slide_in_right)
             .setExitAnim(R.anim.slide_out_left)
@@ -47,19 +50,57 @@ public class CompletedBoxAdapter extends RecyclerView.Adapter<CompletedBoxAdapte
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull CompletedBoxAdapter.BoxViewHolder holder, int position) {
-        holder.boxNumberTextView.setText("Box " + boxStatusModelArrayList.get(position).getBoxNumber());
-        holder.boxStatusTextView.setText(boxStatusModelArrayList.get(position).getStatus());
+    public void onBindViewHolder(@NonNull CompletedBoxAdapter.BoxViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        CompletedBoxData box = boxStatusModelArrayList.get(position);
+        holder.boxNumberCheckbox.setText("Box " + box.getBoxNumber());
+        holder.boxStatusTextView.setText(box.getStatus());
         holder.boxCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle args = new Bundle();
-                args.putInt(ConstantNames.BOX_ID, boxStatusModelArrayList.get(position).getBoxId());
-                args.putInt(ConstantNames.BOX_NUMBER, boxStatusModelArrayList.get(position).getBoxNumber());
+                args.putInt(ConstantNames.BOX_ID, box.getBoxId());
+                args.putInt(ConstantNames.BOX_NUMBER, box.getBoxNumber());
                 NavHostFragment.findNavController(fragment)
                         .navigate(R.id.reviewCompletedItemsFragment, args, options);
             }
         });
+
+        holder.boxNumberCheckbox.setOnCheckedChangeListener(null);
+        boolean isSelected = selectedBoxIds.contains(box.getBoxId());
+        holder.boxNumberCheckbox.setChecked(isSelected);
+
+        holder.boxNumberCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                if (!selectedBoxIds.contains(box.getBoxId())) {
+                    selectedBoxIds.add(box.getBoxId());
+                }
+            } else {
+                selectedBoxIds.remove(Integer.valueOf(box.getBoxId()));
+            }
+        });
+
+        holder.boxCardView.setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putInt(ConstantNames.BOX_ID, box.getBoxId());
+            args.putInt(ConstantNames.BOX_NUMBER, box.getBoxNumber());
+            NavHostFragment.findNavController(fragment)
+                    .navigate(R.id.reviewCompletedItemsFragment, args, options);
+        });
+
+        if (!holder.boxStatusTextView.getText().equals("Completed"))
+            holder.boxNumberCheckbox.setEnabled(false);
+          else
+            holder.boxNumberCheckbox.setEnabled(true);
+    }
+
+    public ArrayList<Integer> getSelectedBoxIds() {
+        return new ArrayList<>(selectedBoxIds);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void clearSelections() {
+        selectedBoxIds.clear();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -68,11 +109,12 @@ public class CompletedBoxAdapter extends RecyclerView.Adapter<CompletedBoxAdapte
     }
 
     public static class BoxViewHolder extends RecyclerView.ViewHolder {
-        TextView boxNumberTextView, boxStatusTextView;
+        TextView boxStatusTextView;
         CardView boxCardView;
+        CheckBox boxNumberCheckbox;
         public BoxViewHolder(@NonNull View itemView) {
             super(itemView);
-            boxNumberTextView = itemView.findViewById(R.id.boxNumber);
+            boxNumberCheckbox = itemView.findViewById(R.id.boxNumber);
             boxStatusTextView = itemView.findViewById(R.id.boxStatus);
             boxCardView = itemView.findViewById(R.id.boxCardView);
         }

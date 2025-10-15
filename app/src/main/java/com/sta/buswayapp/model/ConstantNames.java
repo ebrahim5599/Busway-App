@@ -34,7 +34,9 @@ public class ConstantNames {
 
     public static final String BOX_NUMBER = "box number";
     public static final String BOX_ID = "box id";
+    public static final String PACKING_STAGE = "packing stage";
 
 
-
+    public static final String READY_BOX_ID = "ready box id";
+    public static final String READY_BOX_NUMBER = "ready box number";
 }

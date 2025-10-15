@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.packing.PackingSupervisorSideFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.packing.PackingBoxesFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,13 +12,12 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/packingProcessJobOrderAdminView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Job order: "
+            android:text="Admin view | Packing"
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -25,42 +25,50 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Customer ID: "
+            android:text="Customer : "
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/packingInProgressAdminView"
+            android:id="@+id/packingProcessJobSalesrderAdminView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Packing in progress"
+            android:text="Sales order: "
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Admin View"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/scanBoxBarcodeOrRfidButtonPackingProcess"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/boxBarcodeCardView"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
-            android:textAllCaps="true"
-            android:text="Scan Box QR-code"
-            android:backgroundTint="#BDBDBD"
-            android:textColor="@color/black"/>
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/boxBarcodeTextview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:padding="16dp"
+                android:text="Scan Box QR-code"
+                android:textStyle="bold"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/completedPackingBoxesRecyclerView"

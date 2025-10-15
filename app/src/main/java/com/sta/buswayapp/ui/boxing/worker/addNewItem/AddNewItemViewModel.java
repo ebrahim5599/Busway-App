@@ -1,14 +1,16 @@
 package com.sta.buswayapp.ui.boxing.worker.addNewItem;
 
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.sta.buswayapp.data.DataBuilder;
-import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsResponse;
-import com.sta.buswayapp.model.box.worker.modifyItem.ModifyItemResponse;
-import com.sta.buswayapp.model.item.Root;
-import com.sta.buswayapp.model.item.ValidateItems;
+import com.sta.buswayapp.data.remote.DataBuilder;
+import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsResponse;
+import com.sta.buswayapp.model.boxing.item.modifyItem.ModifyItemResponse;
+import com.sta.buswayapp.model.boxing.item.Root;
+import com.sta.buswayapp.model.boxing.item.ValidateItems;
 
 import java.util.ArrayList;
 
@@ -54,11 +56,13 @@ public class AddNewItemViewModel extends ViewModel {
             @Override
             public void onResponse(Call<ModifyItemResponse> call, Response<ModifyItemResponse> response) {
                 itemResponseMutableLiveData.setValue(response.body());
+                Log.i("TAG", "onResponse: UPDATE: " + response.message());
             }
 
             @Override
             public void onFailure(Call<ModifyItemResponse> call, Throwable t) {
                 itemResponseMutableLiveData.setValue(null);
+                Log.i("TAG", "onFailure: UPDATE: ");
             }
         });
     }

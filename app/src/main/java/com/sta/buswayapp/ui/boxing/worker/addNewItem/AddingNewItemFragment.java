@@ -18,33 +18,24 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sta.buswayapp.R;
 import com.sta.buswayapp.adapter.ReviewItemsAdapter;
 import com.sta.buswayapp.adapter.ScannedItemsAdapter;
 import com.sta.buswayapp.databinding.FragmentAddingNewItemsBinding;
 import com.sta.buswayapp.model.ConstantNames;
 
-import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsData;
-import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsResponse;
-import com.sta.buswayapp.model.box.worker.modifyItem.ModifyItemResponse;
-import com.sta.buswayapp.model.item.Item;
-import com.sta.buswayapp.model.item.Root;
-import com.sta.buswayapp.model.item.ValidateItems;
+import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsData;
+import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsResponse;
+import com.sta.buswayapp.model.boxing.item.modifyItem.ModifyItemResponse;
+import com.sta.buswayapp.model.boxing.item.Root;
+import com.sta.buswayapp.model.boxing.item.ValidateItems;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class AddingNewItemFragment extends Fragment {
 
@@ -65,6 +56,7 @@ public class AddingNewItemFragment extends Fragment {
                 String barcodeData = intent.getStringExtra("data");
                 if (itemCodeArrayList != null && editItems) {
                     returnedItemList.add(new BoxedItemsData(barcodeData));
+                    updatedItemsList.add(barcodeData);
                     reviewAdapter.notifyDataSetChanged();
                 } else if (itemCodeArrayList != null && !editItems) {
                     itemCodeArrayList.add(barcodeData);
@@ -106,14 +98,14 @@ public class AddingNewItemFragment extends Fragment {
             addNewItemViewModel.getBoxItems(boxId);
             reviewAdapter = new ReviewItemsAdapter(getContext(), returnedItemList, AddingNewItemFragment.this, true);
             binding.completedPackingBoxesRecyclerView.setAdapter(reviewAdapter);
-
+            binding.completedPackingBoxesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             addNewItemViewModel.getItemResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ModifyItemResponse>() {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onChanged(ModifyItemResponse modifyItemResponse) {
                     binding.loadingOverlay.setVisibility(View.GONE);
                     if (modifyItemResponse == null) {
-                        Toast.makeText(getContext(), "Failed to validate items.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Failed to update items.", Toast.LENGTH_SHORT).show();
                     } else {
                         if (modifyItemResponse.isSucsess) {
                             Toast.makeText(getContext(), modifyItemResponse.message, Toast.LENGTH_SHORT).show();
@@ -131,15 +123,57 @@ public class AddingNewItemFragment extends Fragment {
                         }
                         reviewAdapter.notifyDataSetChanged();
                     }
-
                 }
             });
-
+            addNewItemViewModel.getBoxedItemsResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<BoxedItemsResponse>() {
+                @SuppressLint("NotifyDataSetChanged")
+                @Override
+                public void onChanged(BoxedItemsResponse boxedItemsResponse) {
+                    binding.loadingOverlay.setVisibility(View.GONE);
+                    binding.completedPackingBoxesRecyclerView.setVisibility(View.VISIBLE);
+                    if (boxedItemsResponse == null) {
+                        Toast.makeText(getContext(), "Failed to get items.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), boxedItemsResponse.message, Toast.LENGTH_SHORT).show();
+                        if (boxedItemsResponse.isSucsess) {
+                            returnedItemList.addAll(boxedItemsResponse.data);
+                            reviewAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            });
         } else {
             adapter = new ScannedItemsAdapter(getContext(), itemCodeArrayList, AddingNewItemFragment.this);
             binding.completedPackingBoxesRecyclerView.setAdapter(adapter);
+            binding.completedPackingBoxesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            addNewItemViewModel.getResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Root>() {
+                @SuppressLint("NotifyDataSetChanged")
+                @Override
+                public void onChanged(Root root) {
+                    binding.loadingOverlay.setVisibility(View.GONE);
+                    if (root == null) {
+                        Toast.makeText(getContext(), "Failed to validate items.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (root.isSucsess) {
+                            Toast.makeText(getContext(), root.message, Toast.LENGTH_SHORT).show();
+                            NavController navController = NavHostFragment.findNavController(AddingNewItemFragment.this);
+                            if (navController.getPreviousBackStackEntry() != null) {
+                                navController.getPreviousBackStackEntry()
+                                        .getSavedStateHandle()
+                                        .set(ConstantNames.ITEMS_LIST_KEY, itemCodeArrayList);
+                            }
+                            navController.popBackStack();
+                            adapter.setHasError(false);
+                        } else {
+                            adapter.setWrongItemArrayList(root.items);
+                            adapter.setHasError(true);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            });
         }
-        binding.completedPackingBoxesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         binding.validateItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,51 +182,6 @@ public class AddingNewItemFragment extends Fragment {
                     addNewItemViewModel.updateItemsList(boxId, updatedItemsList);
                 } else {
                     addNewItemViewModel.validateBoxItems(new ValidateItems(projectID, itemCodeArrayList));
-                }
-            }
-        });
-
-        addNewItemViewModel.getResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Root>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onChanged(Root root) {
-                binding.loadingOverlay.setVisibility(View.GONE);
-                if (root == null) {
-                    Toast.makeText(getContext(), "Failed to validate items.", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (root.isSucsess) {
-                        Toast.makeText(getContext(), root.message, Toast.LENGTH_SHORT).show();
-                        NavController navController = NavHostFragment.findNavController(AddingNewItemFragment.this);
-                        if (navController.getPreviousBackStackEntry() != null) {
-                            navController.getPreviousBackStackEntry()
-                                    .getSavedStateHandle()
-                                    .set(ConstantNames.ITEMS_LIST_KEY, itemCodeArrayList);
-                        }
-                        navController.popBackStack();
-                        adapter.setHasError(false);
-                    } else {
-                        adapter.setWrongItemArrayList(root.items);
-                        adapter.setHasError(true);
-                    }
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        });
-
-        addNewItemViewModel.getBoxedItemsResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<BoxedItemsResponse>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onChanged(BoxedItemsResponse boxedItemsResponse) {
-                binding.loadingOverlay.setVisibility(View.GONE);
-                binding.completedPackingBoxesRecyclerView.setVisibility(View.VISIBLE);
-                if (boxedItemsResponse == null) {
-                    Toast.makeText(getContext(), "Failed to get the boxed items.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), boxedItemsResponse.message, Toast.LENGTH_SHORT).show();
-                    if (boxedItemsResponse.isSucsess) {
-                        returnedItemList.addAll(boxedItemsResponse.data);
-                        reviewAdapter.notifyDataSetChanged();
-                    }
                 }
             }
         });

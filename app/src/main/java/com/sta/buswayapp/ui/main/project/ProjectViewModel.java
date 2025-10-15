@@ -3,8 +3,7 @@ package com.sta.buswayapp.ui.main.project;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.sta.buswayapp.data.DataBuilder;
-import com.sta.buswayapp.model.client.ClientResponse;
+import com.sta.buswayapp.data.remote.DataBuilder;
 import com.sta.buswayapp.model.project.ProjectResponse;
 
 import retrofit2.Call;

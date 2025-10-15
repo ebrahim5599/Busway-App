@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.sta.buswayapp.data.DataBuilder;
+import com.sta.buswayapp.data.remote.DataBuilder;
 import com.sta.buswayapp.model.GuestData;
 
 import retrofit2.Call;

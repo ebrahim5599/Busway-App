@@ -5,7 +5,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:layout_margin="8dp"
-tools:context=".ui.packing.ReviewPackedItemsFragment">
+tools:context=".ui.packing.ReviewItemsFragment">
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -57,6 +57,14 @@ tools:context=".ui.packing.ReviewPackedItemsFragment">
         android:layout_marginEnd="16dp"
         android:text="Box Items"
         android:textStyle="bold" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/completedPackedItemsRecyclerView"

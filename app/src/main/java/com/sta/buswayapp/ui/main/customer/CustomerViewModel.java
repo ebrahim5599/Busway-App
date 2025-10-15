@@ -1,11 +1,9 @@
 package com.sta.buswayapp.ui.main.customer;
 
-import android.view.View;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.sta.buswayapp.data.DataBuilder;
+import com.sta.buswayapp.data.remote.DataBuilder;
 import com.sta.buswayapp.model.client.ClientResponse;
 
 import retrofit2.Call;

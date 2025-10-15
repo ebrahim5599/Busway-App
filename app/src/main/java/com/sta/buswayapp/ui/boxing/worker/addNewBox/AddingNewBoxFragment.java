@@ -18,7 +18,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +29,10 @@ import android.widget.Toast;
 
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
-import com.sta.buswayapp.model.box.admin.ReturnedBox.ReturnedBoxResponse;
-import com.sta.buswayapp.model.box.worker.getBoxNum.CurrentBoxResponse;
-import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxBody;
-import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxResponse;
+import com.sta.buswayapp.model.boxing.box.admin.ReturnedBox.ReturnedBoxResponse;
+import com.sta.buswayapp.model.boxing.box.worker.getBoxNum.CurrentBoxResponse;
+import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxBody;
+import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxResponse;
 
 import java.util.ArrayList;
 

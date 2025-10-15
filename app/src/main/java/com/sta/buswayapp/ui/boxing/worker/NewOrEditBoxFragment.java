@@ -22,11 +22,10 @@ import com.sta.buswayapp.R;
 import com.sta.buswayapp.adapter.ModifiedBoxAdapter;
 import com.sta.buswayapp.databinding.FragmentNewOrEditBoxBinding;
 import com.sta.buswayapp.model.ConstantNames;
-import com.sta.buswayapp.model.box.worker.modifyBox.ModifyBoxData;
-import com.sta.buswayapp.model.box.worker.modifyBox.ModifyBoxResponse;
+import com.sta.buswayapp.model.boxing.box.worker.modifyBox.ModifyBoxData;
+import com.sta.buswayapp.model.boxing.box.worker.modifyBox.ModifyBoxResponse;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class NewOrEditBoxFragment extends Fragment {
 

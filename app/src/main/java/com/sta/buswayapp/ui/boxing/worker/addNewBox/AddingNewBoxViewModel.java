@@ -5,11 +5,11 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.sta.buswayapp.data.DataBuilder;
-import com.sta.buswayapp.model.box.admin.ReturnedBox.ReturnedBoxResponse;
-import com.sta.buswayapp.model.box.worker.getBoxNum.CurrentBoxResponse;
-import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxBody;
-import com.sta.buswayapp.model.box.worker.createBox.CreatedBoxResponse;
+import com.sta.buswayapp.data.remote.DataBuilder;
+import com.sta.buswayapp.model.boxing.box.admin.ReturnedBox.ReturnedBoxResponse;
+import com.sta.buswayapp.model.boxing.box.worker.getBoxNum.CurrentBoxResponse;
+import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxBody;
+import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

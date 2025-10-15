@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -18,19 +20,22 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.sta.buswayapp.adapter.ReviewItemsAdapter;
-import com.sta.buswayapp.adapter.ScannedItemsAdapter;
 import com.sta.buswayapp.databinding.FragmentScannedItemsBinding;
 import com.sta.buswayapp.model.ConstantNames;
-import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsData;
-import com.sta.buswayapp.model.box.admin.boxItems.BoxedItemsResponse;
-import com.sta.buswayapp.ui.boxing.worker.addNewItem.AddingNewItemFragment;
+import com.sta.buswayapp.model.boxing.box.admin.SubmittedBoxes;
+import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsData;
+import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsResponse;
 
 import java.util.ArrayList;
 
 public class ScannedItemsFragment extends Fragment {
 
     private FragmentScannedItemsBinding binding;
+    private ArrayList<BoxedItemsData> itemCodeArrayList;
     private int boxId, boxNumber;
+    private boolean fromPacking = false;
+
+
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -40,15 +45,65 @@ public class ScannedItemsFragment extends Fragment {
         View view = binding.getRoot();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
         ScannedItemsViewModel scannedItemsViewModel = new ViewModelProvider(this).get(ScannedItemsViewModel.class);
-        ArrayList<BoxedItemsData> itemCodeArrayList = new ArrayList<>();
+        itemCodeArrayList = new ArrayList<>();
         Bundle bundle = getArguments();
         if (bundle != null) {
             boxId = bundle.getInt(ConstantNames.BOX_ID);
             boxNumber = bundle.getInt(ConstantNames.BOX_NUMBER);
+            fromPacking = bundle.getBoolean(ConstantNames.PACKING_STAGE, false);
             binding.progressBar.setVisibility(View.VISIBLE);
             binding.completedItemsRecyclerView.setVisibility(View.GONE);
             scannedItemsViewModel.getScannedItems(boxId);
             binding.boxNumberTextView.setText("Box " + boxNumber);
+        }
+        if (fromPacking){
+            binding.editBox.setVisibility(View.GONE);
+            binding.done.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    binding.loadingOverlay.setVisibility(View.VISIBLE);
+                    scannedItemsViewModel.markBoxAsReady(boxId);
+                    NavController navController = NavHostFragment.findNavController(ScannedItemsFragment.this);
+
+                    navController.getPreviousBackStackEntry()
+                            .getSavedStateHandle()
+                            .set(ConstantNames.READY_BOX_NUMBER, boxNumber);
+
+                    navController.popBackStack();
+                }
+            });
+
+            scannedItemsViewModel.getBoxIsReady().observe(getViewLifecycleOwner(), new Observer<SubmittedBoxes>() {
+                @Override
+                public void onChanged(SubmittedBoxes submittedBoxes) {
+                    binding.loadingOverlay.setVisibility(View.GONE);
+                    if (submittedBoxes == null) {
+                        Toast.makeText(getContext(), "Failed to mark box as ready", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(), submittedBoxes.message, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }else{
+            binding.done.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    binding.loadingOverlay.setVisibility(View.VISIBLE);
+                    scannedItemsViewModel.changeStatusToComplete(boxId);
+                    NavHostFragment.findNavController(ScannedItemsFragment.this).popBackStack();
+
+                }
+            });
+
+            binding.editBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    binding.loadingOverlay.setVisibility(View.VISIBLE);
+                    scannedItemsViewModel.changeStatusToModify(boxId);
+                    NavHostFragment.findNavController(ScannedItemsFragment.this).popBackStack();
+                }
+            });
+
         }
         binding.projectNameTextView.setText("Project: " + sharedPreferences.getString(ConstantNames.PROJECT_NAME, ""));
         binding.salesOrderTextField.setText("Sales order: " + sharedPreferences.getString(ConstantNames.SALES_ORDER, ""));
@@ -56,6 +111,7 @@ public class ScannedItemsFragment extends Fragment {
         ReviewItemsAdapter adapter = new ReviewItemsAdapter(getContext(), itemCodeArrayList, ScannedItemsFragment.this);
         binding.completedItemsRecyclerView.setAdapter(adapter);
         binding.completedItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         scannedItemsViewModel.getBoxedItemsResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<BoxedItemsResponse>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -74,6 +130,8 @@ public class ScannedItemsFragment extends Fragment {
                 }
             }
         });
+
+
 
         return view;
     }

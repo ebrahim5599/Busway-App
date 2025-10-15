@@ -3,8 +3,8 @@ package com.sta.buswayapp.ui.boxing.worker;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.sta.buswayapp.data.DataBuilder;
-import com.sta.buswayapp.model.box.worker.modifyBox.ModifyBoxResponse;
+import com.sta.buswayapp.data.remote.DataBuilder;
+import com.sta.buswayapp.model.boxing.box.worker.modifyBox.ModifyBoxResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

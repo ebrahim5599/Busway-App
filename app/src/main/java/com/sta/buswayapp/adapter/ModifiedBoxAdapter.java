@@ -10,14 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sta.buswayapp.R;
-import com.sta.buswayapp.model.box.worker.modifyBox.ModifyBoxData;
+import com.sta.buswayapp.model.boxing.box.worker.modifyBox.ModifyBoxData;
 
 import java.util.ArrayList;
 
@@ -47,7 +46,7 @@ public class ModifiedBoxAdapter extends RecyclerView.Adapter<ModifiedBoxAdapter.
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ModifiedBoxAdapter.BoxViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.boxNumberTextView.setText("Box " + modifyBoxData.get(position).getId());
+        holder.boxNumberTextView.setText("Box " + modifyBoxData.get(position).getBoxNumber());
         holder.boxLinear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
