@@ -39,4 +39,7 @@ public class ConstantNames {
 
     public static final String READY_BOX_ID = "ready box id";
     public static final String READY_BOX_NUMBER = "ready box number";
+    public static final String BOX_BARCODE = "box barcode";
+    public static final String BOX_NUMBER_WORKER = "box number for worker";
+    public static final String DEPARTMENT = "department";
 }

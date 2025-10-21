@@ -4,6 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="error_bg">#EB1101</color>
     <color name="gray">#CACACA</color>
+    <color name="light_gray">#EEEEEE</color>
     <color name="green">#CCFF90</color>
+
 
 </resources>

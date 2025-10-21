@@ -18,6 +18,8 @@ public class ScannedItemsViewModel extends ViewModel {
     private final MutableLiveData<BoxStatusResponse> boxStatusResponseMutableLiveData = new MutableLiveData<>();
 
     private final MutableLiveData<SubmittedBoxes> boxIsReadyMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<BoxedItemsResponse> boxBarcodeMutableLiveData = new MutableLiveData();
+
 
     public MutableLiveData<SubmittedBoxes> getBoxIsReady() {
         return boxIsReadyMutableLiveData;
@@ -79,6 +81,20 @@ public class ScannedItemsViewModel extends ViewModel {
             @Override
             public void onFailure(Call<SubmittedBoxes> call, Throwable t) {
                 boxIsReadyMutableLiveData.setValue(null);
+            }
+        });
+    }
+
+    public void getBoxItemsByBarcode(String barcode){
+        DataBuilder.getINSTANCE().getItemsByBoxBarcode(barcode).enqueue(new Callback<BoxedItemsResponse>() {
+            @Override
+            public void onResponse(Call<BoxedItemsResponse> call, Response<BoxedItemsResponse> response) {
+                boxedItemsResponseMutableLiveData.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<BoxedItemsResponse> call, Throwable t) {
+                boxedItemsResponseMutableLiveData.setValue(null);
             }
         });
     }

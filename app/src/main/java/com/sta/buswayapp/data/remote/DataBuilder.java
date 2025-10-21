@@ -112,6 +112,9 @@ public class DataBuilder {
         return apiInterface.markBoxAsReady(boxID);
     }
 
+    public Call<SubmittedBoxes> packingSubmit(int dep, ArrayList<Integer> boxesIDs){
+        return apiInterface.packingSubmit(dep, boxesIDs);
+    }
 
 
 

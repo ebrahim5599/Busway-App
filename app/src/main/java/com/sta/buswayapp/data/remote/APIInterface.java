@@ -82,6 +82,10 @@ public interface APIInterface {
     @POST("api/Box/ReadyForSubmit/{BoxId}")
     Call<SubmittedBoxes> markBoxAsReady(@Path("BoxId") int boxID);
 
-
+    @POST("api/Box/PackingSubmit")
+    Call<SubmittedBoxes> packingSubmit(
+            @Query("type") int type,
+            @Body List<Integer> boxesIDs
+    );
 
  }

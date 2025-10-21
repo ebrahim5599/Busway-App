@@ -47,6 +47,7 @@ public class AddingNewItemFragment extends Fragment {
     private AddNewItemViewModel addNewItemViewModel;
     private boolean editItems = false;
     private int boxId;
+    private String boxNumberAsText;
 
     private final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
         @SuppressLint("NotifyDataSetChanged")
@@ -78,6 +79,8 @@ public class AddingNewItemFragment extends Fragment {
         if (bundle != null) {
             editItems = bundle.getBoolean("edit_items_key");
             boxId = bundle.getInt("box_id");
+            boxNumberAsText = bundle.getString("box_number_text", "");
+            binding.boxNumberTextView.setText("Box No. " + boxId);
         }
         Toast.makeText(getContext(), editItems + "", Toast.LENGTH_SHORT).show();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
@@ -85,7 +88,7 @@ public class AddingNewItemFragment extends Fragment {
 
         binding.projectNameTextView.setText("Project: " + sharedPreferences.getString(ConstantNames.PROJECT_NAME, "STA 1"));
         binding.projectSalesOrderTextView.setText("Sales order: " + sharedPreferences.getString(ConstantNames.SALES_ORDER, "99915050"));
-        binding.boxNumberTextView.setText("Box No.: " + sharedPreferences.getInt(ConstantNames.BOX_NUMBER, 1));
+        binding.boxNumberTextView.setText(boxNumberAsText);
 
         addNewItemViewModel = new ViewModelProvider(AddingNewItemFragment.this).get(AddNewItemViewModel.class);
         itemCodeArrayList = new ArrayList<>();

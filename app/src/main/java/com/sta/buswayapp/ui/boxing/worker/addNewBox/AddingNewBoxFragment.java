@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sta.buswayapp.R;
+import com.sta.buswayapp.databinding.FragmentAddingNewBoxBinding;
 import com.sta.buswayapp.model.ConstantNames;
 import com.sta.buswayapp.model.boxing.box.admin.ReturnedBox.ReturnedBoxResponse;
 import com.sta.buswayapp.model.boxing.box.worker.getBoxNum.CurrentBoxResponse;
@@ -49,7 +50,7 @@ public class AddingNewBoxFragment extends Fragment {
     private boolean navigateToCustomerFragment = false;
     private boolean editItemsFlag = false;
     private int boxId;
-
+    private FragmentAddingNewBoxBinding binding;
 
     private final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
         @Override
@@ -65,14 +66,14 @@ public class AddingNewBoxFragment extends Fragment {
     };
     @SuppressLint("SetTextI18n")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_adding_new_box, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentAddingNewBoxBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+
         sharedPreferences = requireContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
         projectID = Integer.parseInt(sharedPreferences.getString(ConstantNames.PROJECT_ID, "0"));
         addingNewBoxViewModel = new ViewModelProvider(AddingNewBoxFragment.this).get(AddingNewBoxViewModel.class);
 
-        Button scanItemsButton = view.findViewById(R.id.scan_bar_code_button);
         progressBar = view.findViewById(R.id.boxNumberProgressBar);
         boxNumberTextView = view.findViewById(R.id.boxNumberTextView);
         boxBarcodeTextView = view.findViewById(R.id.scanBoxBarcodeTextView);
@@ -104,20 +105,20 @@ public class AddingNewBoxFragment extends Fragment {
                 .setPopExitAnim(R.anim.slide_out_right)
                 .build();
 
-        scanItemsButton.setOnClickListener(new View.OnClickListener() {
+        binding.scanBarCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"SCAN", Toast.LENGTH_SHORT).show();
                 Bundle args = new Bundle();
                 args.putBoolean("edit_items_key", editItemsFlag);
                 args.putInt("box_id", boxId);
+                args.putString("box_number_text", boxNumberTextView.getText().toString());
                 NavHostFragment.findNavController(AddingNewBoxFragment.this)
                         .navigate(R.id.addingNewItemsFragment, args, options);
             }
         });
 
-        Button postAndAddNewBoxButton = view.findViewById(R.id.postAndAddNewBox);
-        postAndAddNewBoxButton.setOnClickListener(new View.OnClickListener() {
+        binding.postAndAddNewBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"New Box", Toast.LENGTH_SHORT).show();
@@ -134,8 +135,7 @@ public class AddingNewBoxFragment extends Fragment {
             }
         });
 
-        Button finishBox = view.findViewById(R.id.finishBoxing);
-        finishBox.findViewById(R.id.finishBoxing).setOnClickListener(new View.OnClickListener() {
+        binding.finishBoxing.findViewById(R.id.finishBoxing).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Finish", Toast.LENGTH_SHORT).show();
@@ -161,8 +161,18 @@ public class AddingNewBoxFragment extends Fragment {
                     Toast.makeText(getContext(), uploadedBoxResponse.message, Toast.LENGTH_SHORT).show();
                     if (uploadedBoxResponse.isSuccess){
                         if (navigateToCustomerFragment){
-                            NavHostFragment.findNavController(AddingNewBoxFragment.this)
-                                    .navigate(R.id.currentCustomersFragment, null, options);
+                            NavHostFragment.findNavController(AddingNewBoxFragment.this).popBackStack(R.id.currentCustomersFragment, false);
+                        } else {
+                            boxWeightEditText.setText(null);
+                            boxBarcodeTextView.setText(null);
+                            boxLengthEditText.setText(null);
+                            boxWidthEditText.setText(null);
+                            boxHeightEditText.setText(null);
+                            receivedList.clear();
+                            itemInfoTextView.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.VISIBLE);
+                            boxNumberTextView.setVisibility(View.GONE);
+                            addingNewBoxViewModel.getCurrentBoxNumber(sharedPreferences.getString(ConstantNames.PROJECT_ID, "0"));
                         }
                     }
 
@@ -174,9 +184,9 @@ public class AddingNewBoxFragment extends Fragment {
         if (bundle != null) {
             boxId = bundle.getInt("boxId");
             editItemsFlag = true;
-            scanItemsButton.setText("Show Box Items");
-            finishBox.setVisibility(View.GONE);
-            postAndAddNewBoxButton.setVisibility(View.GONE);
+            binding.scanBarCodeButton.setText("Show Box Items");
+            binding.finishBoxing.setVisibility(View.GONE);
+            binding.postAndAddNewBox.setVisibility(View.GONE);
             Toast.makeText(getContext(), "BOX ID: " + boxId, Toast.LENGTH_SHORT).show();
             addingNewBoxViewModel.returnedBoxesData(boxId);
             addingNewBoxViewModel.getReturnedBoxResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ReturnedBoxResponse>() {
@@ -222,8 +232,8 @@ public class AddingNewBoxFragment extends Fragment {
                     } else {
                         int boxNumber = currentBoxResponse.data.boxNumber;
                         boxNumberTextView.setText("Box No. " + boxNumber);
-//                    editor.putInt(ConstantNames.BOX_NUMBER, boxNumber);
-//                    editor.apply();
+//                        editor.putInt(ConstantNames.BOX_NUMBER_WORKER, boxNumber);
+//                        editor.apply();
                     }
                 }
             });

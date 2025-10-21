@@ -22,8 +22,10 @@ import com.sta.buswayapp.model.ConstantNames;
 
 public class LoginFragment extends Fragment {
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private int department;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,9 +36,8 @@ public class LoginFragment extends Fragment {
 
         EditText email = view.findViewById(R.id.emailEditText);
         EditText password = view.findViewById(R.id.passwordEditText);
+        department = 2;
 
-//        // Retrieve
-//        String typeOfUser = sharedPreferences.getString(ConstantNames.TYPE_OF_USER, ConstantNames.WORKER);
 
         NavOptions options = new NavOptions.Builder()
                 .setEnterAnim(R.anim.slide_in_right)
@@ -65,6 +66,7 @@ public class LoginFragment extends Fragment {
                         editor.putString(ConstantNames.TYPE_OF_USER, ConstantNames.SUPERVISOR);
                         editor.putString(ConstantNames.EMAIL, email.getText().toString());
                         editor.putString(ConstantNames.PASSWORD, password.getText().toString());
+                        editor.putInt(ConstantNames.DEPARTMENT, department);
 
                         NavHostFragment.findNavController(LoginFragment.this)
                                 .navigate(R.id.processFragment, null, options);

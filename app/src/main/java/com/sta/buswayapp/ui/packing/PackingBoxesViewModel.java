@@ -8,6 +8,8 @@ import com.sta.buswayapp.model.boxing.box.admin.SubmittedBoxes;
 import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsResponse;
 import com.sta.buswayapp.model.packing.PackedBoxesResponse;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,7 +18,7 @@ public class PackingBoxesViewModel extends ViewModel {
 
     private final MutableLiveData<PackedBoxesResponse> packedBoxesMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<BoxedItemsResponse> boxedItemsMutableLiveData = new MutableLiveData<>();
-    private final MutableLiveData<BoxedItemsResponse> boxBarcodeMutableLiveData = new MutableLiveData();
+    private final MutableLiveData<SubmittedBoxes> packingSubmitMutableLiveData = new MutableLiveData<>();
 
     public MutableLiveData<PackedBoxesResponse> getPackedBoxesMutableLiveData() {
         return packedBoxesMutableLiveData;
@@ -24,6 +26,10 @@ public class PackingBoxesViewModel extends ViewModel {
 
     public MutableLiveData<BoxedItemsResponse> getBoxedItemsMutableLiveData() {
         return boxedItemsMutableLiveData;
+    }
+
+    public MutableLiveData<SubmittedBoxes> getPackingSubmitMutableLiveData() {
+        return packingSubmitMutableLiveData;
     }
 
     public void getPackedBoxes(int projectID){
@@ -40,19 +46,17 @@ public class PackingBoxesViewModel extends ViewModel {
         });
     }
 
-    public void getBoxItemsByBarcod(String barcode){
-        DataBuilder.getINSTANCE().getItemsByBoxBarcode(barcode).enqueue(new Callback<BoxedItemsResponse>() {
+    public void submitPacking(int dept, ArrayList<Integer> boxesIDs) {
+        DataBuilder.getINSTANCE().packingSubmit(dept, boxesIDs).enqueue(new Callback<SubmittedBoxes>() {
             @Override
-            public void onResponse(Call<BoxedItemsResponse> call, Response<BoxedItemsResponse> response) {
-                boxBarcodeMutableLiveData.setValue(response.body());
+            public void onResponse(Call<SubmittedBoxes> call, Response<SubmittedBoxes> response) {
+                packingSubmitMutableLiveData.setValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<BoxedItemsResponse> call, Throwable t) {
-                boxBarcodeMutableLiveData.setValue(null);
+            public void onFailure(Call<SubmittedBoxes> call, Throwable t) {
+                packingSubmitMutableLiveData.setValue(null);
             }
         });
     }
-
-
 }

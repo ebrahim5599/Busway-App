@@ -1,6 +1,6 @@
 package com.sta.buswayapp.model.boxing.box.admin.boxItems;
 
-public class BoxedItemsData {
+public class BoxedItemsData{
     public int id;
     public String barcode;
     public boolean isBoxed;

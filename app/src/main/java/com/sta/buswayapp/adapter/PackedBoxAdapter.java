@@ -28,6 +28,7 @@ import java.util.ArrayList;
 public class PackedBoxAdapter extends RecyclerView.Adapter<PackedBoxAdapter.PackedBoxViewHolder> {
     private Context context;
     private ArrayList<PackedBoxesData> packedBoxArrayList;
+    private ArrayList<Integer> idsOfReadyBoxes = new ArrayList<>();
     private int reviewedBoxNumber;
     private Fragment fragment;
 
@@ -60,6 +61,9 @@ public class PackedBoxAdapter extends RecyclerView.Adapter<PackedBoxAdapter.Pack
         holder.boxCard.setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray));
         if (box.isReadyForSubmit()){
             holder.boxCard.setCardBackgroundColor(ContextCompat.getColor(context, R.color.green));
+            if (!idsOfReadyBoxes.contains(box.getBoxId())){
+                idsOfReadyBoxes.add(box.getBoxId());
+            }
         }
         holder.boxCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,5 +103,9 @@ public class PackedBoxAdapter extends RecyclerView.Adapter<PackedBoxAdapter.Pack
     public void setReviewedBoxNumber(int reviewedBoxNumber) {
         this.reviewedBoxNumber = reviewedBoxNumber;
         notifyDataSetChanged();
+    }
+
+    public ArrayList<Integer> getIdsOfReadyBoxes() {
+        return idsOfReadyBoxes;
     }
 }

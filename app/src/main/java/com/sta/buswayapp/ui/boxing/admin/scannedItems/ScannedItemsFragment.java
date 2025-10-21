@@ -33,6 +33,7 @@ public class ScannedItemsFragment extends Fragment {
     private FragmentScannedItemsBinding binding;
     private ArrayList<BoxedItemsData> itemCodeArrayList;
     private int boxId, boxNumber;
+    private String boxBarcode;
     private boolean fromPacking = false;
 
 
@@ -48,13 +49,18 @@ public class ScannedItemsFragment extends Fragment {
         itemCodeArrayList = new ArrayList<>();
         Bundle bundle = getArguments();
         if (bundle != null) {
-            boxId = bundle.getInt(ConstantNames.BOX_ID);
-            boxNumber = bundle.getInt(ConstantNames.BOX_NUMBER);
+            boxId = bundle.getInt(ConstantNames.BOX_ID, 0);
+            boxNumber = bundle.getInt(ConstantNames.BOX_NUMBER, 0);
             fromPacking = bundle.getBoolean(ConstantNames.PACKING_STAGE, false);
+            boxBarcode = bundle.getString(ConstantNames.BOX_BARCODE, "");
             binding.progressBar.setVisibility(View.VISIBLE);
             binding.completedItemsRecyclerView.setVisibility(View.GONE);
             scannedItemsViewModel.getScannedItems(boxId);
             binding.boxNumberTextView.setText("Box " + boxNumber);
+
+            if (!boxBarcode.equals("")){
+                scannedItemsViewModel.getBoxItemsByBarcode(boxBarcode);
+            }
         }
         if (fromPacking){
             binding.editBox.setVisibility(View.GONE);

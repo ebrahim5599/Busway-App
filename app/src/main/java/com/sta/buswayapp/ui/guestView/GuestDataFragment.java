@@ -90,7 +90,7 @@ public class GuestDataFragment extends Fragment {
                     editor.putString(ConstantNames.GUEST_POSITION, guestData.getPosition());
 
                     loadingOverlay.setVisibility(View.VISIBLE);
-
+                    nextButton.setClickable(false);
                     guestDataViewModel.postNewGuest(guestData);
 
                     editor.apply();
@@ -108,6 +108,7 @@ public class GuestDataFragment extends Fragment {
                         } else {
                             Toast.makeText(getContext(), "Guest data is added successfully", Toast.LENGTH_SHORT).show();
                         }
+                        nextButton.setClickable(true);
                         NavHostFragment.findNavController(GuestDataFragment.this)
                                 .navigate(R.id.guestScanFragment, null, options);
                     }
