@@ -10,6 +10,8 @@ import com.sta.buswayapp.model.boxing.box.admin.ReturnedBox.ReturnedBoxResponse;
 import com.sta.buswayapp.model.boxing.box.worker.getBoxNum.CurrentBoxResponse;
 import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxBody;
 import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxResponse;
+import com.sta.buswayapp.model.boxing.box.worker.updateBox.UpdateBoxData;
+import com.sta.buswayapp.model.boxing.box.worker.updateBox.UpdateBoxResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,15 +20,15 @@ import retrofit2.Response;
 public class AddingNewBoxViewModel extends ViewModel {
 
     private final MutableLiveData<CurrentBoxResponse> boxResponseMutableLiveData = new MutableLiveData<>();
-    private final MutableLiveData<CreatedBoxResponse> uploadedBoxResponseMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<CreatedBoxResponse> createdBoxResponseMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<ReturnedBoxResponse> returnedBoxResponseMutableLiveData = new MutableLiveData<>();
 
     public MutableLiveData<CurrentBoxResponse> getBoxResponseMutableLiveData() {
         return boxResponseMutableLiveData;
     }
 
-    public MutableLiveData<CreatedBoxResponse> getUploadedBoxResponseMutableLiveData() {
-        return uploadedBoxResponseMutableLiveData;
+    public MutableLiveData<CreatedBoxResponse> getCreatedBoxResponseMutableLiveData() {
+        return createdBoxResponseMutableLiveData;
     }
 
     public MutableLiveData<ReturnedBoxResponse> getReturnedBoxResponseMutableLiveData() {
@@ -59,19 +61,19 @@ public class AddingNewBoxViewModel extends ViewModel {
                 if (response.isSuccessful()){
                     if (response.body() != null){
                         Log.d("TAG", "onResponse: " + response.body().message);
-                        uploadedBoxResponseMutableLiveData.setValue(response.body());
+                        createdBoxResponseMutableLiveData.setValue(response.body());
                     }else {
                         Log.d("TAG", "onResponse: null body");
                     }
                 }else {
-                    uploadedBoxResponseMutableLiveData.setValue(null);
+                    createdBoxResponseMutableLiveData.setValue(null);
                     Log.d("TAG", "setValue(null)");
                 }
             }
 
             @Override
             public void onFailure(Call<CreatedBoxResponse> call, Throwable t) {
-                uploadedBoxResponseMutableLiveData.setValue(null);
+                createdBoxResponseMutableLiveData.setValue(null);
                 Log.d("TAG", "onFailure: " + t.getMessage());
 
             }
@@ -91,6 +93,27 @@ public class AddingNewBoxViewModel extends ViewModel {
             public void onFailure(Call<ReturnedBoxResponse> call, Throwable t) {
                 returnedBoxResponseMutableLiveData.setValue(null);
                 Log.e("TAG", "OnFailure: ");
+            }
+        });
+    }
+
+    private final MutableLiveData<UpdateBoxResponse> updateBoxResponseMutableLiveData = new MutableLiveData<>();
+
+    public MutableLiveData<UpdateBoxResponse> getUpdateBoxResponseMutableLiveData() {
+        return updateBoxResponseMutableLiveData;
+    }
+    public void updateBoxAndItsItems(UpdateBoxData uploadBoxData){
+        DataBuilder.getINSTANCE().updateBoxAndItsItems(uploadBoxData).enqueue(new Callback<UpdateBoxResponse>() {
+            @Override
+            public void onResponse(Call<UpdateBoxResponse> call, Response<UpdateBoxResponse> response) {
+                updateBoxResponseMutableLiveData.setValue(response.body());
+                Log.i("TAG", "onResponse: " + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<UpdateBoxResponse> call, Throwable t) {
+                updateBoxResponseMutableLiveData.setValue(null);
+                Log.i("TAG", "onFailure: null");
             }
         });
     }

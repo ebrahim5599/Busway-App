@@ -21,7 +21,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -34,6 +33,8 @@ import com.sta.buswayapp.model.boxing.box.admin.ReturnedBox.ReturnedBoxResponse;
 import com.sta.buswayapp.model.boxing.box.worker.getBoxNum.CurrentBoxResponse;
 import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxBody;
 import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxResponse;
+import com.sta.buswayapp.model.boxing.box.worker.updateBox.UpdateBoxData;
+import com.sta.buswayapp.model.boxing.box.worker.updateBox.UpdateBoxResponse;
 
 import java.util.ArrayList;
 
@@ -52,18 +53,19 @@ public class AddingNewBoxFragment extends Fragment {
     private int boxId;
     private FragmentAddingNewBoxBinding binding;
 
-    private final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null && "com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED".equals(intent.getAction())) {
-                String barcodeData = intent.getStringExtra("data");
-                if (boxBarcodeTextView != null) {
-                    boxBarcodeTextView.setText(barcodeData);
-                }
-                Toast.makeText(requireContext(), "Scanned: " + barcodeData, Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
+//    private final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            if (intent != null && "com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED".equals(intent.getAction())) {
+//                String barcodeData = intent.getStringExtra("data");
+//                if (boxBarcodeTextView != null) {
+//                    boxBarcodeTextView.setText(barcodeData);
+//                }
+//                Toast.makeText(requireContext(), "Scanned: " + barcodeData, Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    };
+
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class AddingNewBoxFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.boxNumberProgressBar);
         boxNumberTextView = view.findViewById(R.id.boxNumberTextView);
-        boxBarcodeTextView = view.findViewById(R.id.scanBoxBarcodeTextView);
+//        boxBarcodeTextView = view.findViewById(R.id.scanBoxBarcodeTextView);
         TextView customerTextView = view.findViewById(R.id.boxingProcessCustomerName);
         TextView projectTextView = view.findViewById(R.id.boxingProcessProjectName);
         EditText boxWeightEditText = view.findViewById(R.id.boxWeightEditText);
@@ -108,7 +110,6 @@ public class AddingNewBoxFragment extends Fragment {
         binding.scanBarCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"SCAN", Toast.LENGTH_SHORT).show();
                 Bundle args = new Bundle();
                 args.putBoolean("edit_items_key", editItemsFlag);
                 args.putInt("box_id", boxId);
@@ -121,38 +122,47 @@ public class AddingNewBoxFragment extends Fragment {
         binding.postAndAddNewBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"New Box", Toast.LENGTH_SHORT).show();
                 navigateToCustomerFragment = false;
 
-                boxBarcodeText = boxBarcodeTextView.getText().toString();
                 boxWeight = Integer.parseInt(boxWeightEditText.getText().toString());
                 boxLength = boxLengthEditText.getText().toString();
                 boxWidth = boxWidthEditText.getText().toString();
                 boxHeight = boxHeightEditText.getText().toString();
                 boxDimensions = boxLength + "×" + boxWidth + "×" + boxHeight;
 
-                addingNewBoxViewModel.createNewBox(new CreatedBoxBody(boxBarcodeText,"", boxWeight, boxDimensions, projectID, receivedList ));
+                addingNewBoxViewModel.createNewBox(new CreatedBoxBody("", boxWeight, boxDimensions, projectID, receivedList ));
             }
         });
 
-        binding.finishBoxing.findViewById(R.id.finishBoxing).setOnClickListener(new View.OnClickListener() {
+        binding.finishBoxing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Finish", Toast.LENGTH_SHORT).show();
                 navigateToCustomerFragment = true;
 
-                boxBarcodeText = boxBarcodeTextView.getText().toString();
                 boxWeight = Integer.parseInt(boxWeightEditText.getText().toString());
                 boxLength = boxLengthEditText.getText().toString();
                 boxWidth = boxWidthEditText.getText().toString();
                 boxHeight = boxHeightEditText.getText().toString();
                 boxDimensions = boxLength + "×" + boxWidth + "×" + boxHeight;
 
-                addingNewBoxViewModel.createNewBox(new CreatedBoxBody(boxBarcodeText,"", boxWeight, boxDimensions, projectID, receivedList ));
+                addingNewBoxViewModel.createNewBox(new CreatedBoxBody("", boxWeight, boxDimensions, projectID, receivedList ));
             }
         });
 
-        addingNewBoxViewModel.getUploadedBoxResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<CreatedBoxResponse>() {
+        // TODO: LAST EDIT
+        binding.updateBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boxLength = boxLengthEditText.getText().toString();
+                boxWidth = boxWidthEditText.getText().toString();
+                boxHeight = boxHeightEditText.getText().toString();
+                boxDimensions = boxLength + "×" + boxWidth + "×" + boxHeight;
+                boxWeight = Integer.parseInt(boxWeightEditText.getText().toString());
+                addingNewBoxViewModel.updateBoxAndItsItems(new UpdateBoxData(boxId, boxDimensions, boxWeight, receivedList));
+            }
+        });
+
+        addingNewBoxViewModel.getCreatedBoxResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<CreatedBoxResponse>() {
             @Override
             public void onChanged(CreatedBoxResponse uploadedBoxResponse) {
                 if (uploadedBoxResponse == null) {
@@ -180,6 +190,22 @@ public class AddingNewBoxFragment extends Fragment {
             }
         });
 
+        // TODO: LAST EDIT
+        addingNewBoxViewModel.getUpdateBoxResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<UpdateBoxResponse>() {
+            @Override
+            public void onChanged(UpdateBoxResponse uploadBoxResponse) {
+                if (uploadBoxResponse == null){
+                    Toast.makeText(getContext(), "Failed to update box.", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), uploadBoxResponse.message, Toast.LENGTH_SHORT).show();
+                    if (uploadBoxResponse.isSucsess){
+                        NavHostFragment.findNavController(AddingNewBoxFragment.this).popBackStack(R.id.currentCustomersFragment, false);
+                    }
+
+                }
+            }
+        });
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             boxId = bundle.getInt("boxId");
@@ -187,6 +213,7 @@ public class AddingNewBoxFragment extends Fragment {
             binding.scanBarCodeButton.setText("Show Box Items");
             binding.finishBoxing.setVisibility(View.GONE);
             binding.postAndAddNewBox.setVisibility(View.GONE);
+            binding.updateBox.setVisibility(View.VISIBLE);
             Toast.makeText(getContext(), "BOX ID: " + boxId, Toast.LENGTH_SHORT).show();
             addingNewBoxViewModel.returnedBoxesData(boxId);
             addingNewBoxViewModel.getReturnedBoxResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ReturnedBoxResponse>() {
@@ -201,17 +228,17 @@ public class AddingNewBoxFragment extends Fragment {
                         if (returnedBoxResponse.isSucsess){
                             boxNumberTextView.setText("Box No. " + returnedBoxResponse.data.boxNumber);
                             boxWeightEditText.setText(String.valueOf(returnedBoxResponse.data.weight));
-                            boxWeightEditText.setEnabled(false);
+//                            boxWeightEditText.setEnabled(false);
                             if (returnedBoxResponse.data.dimension.contains("×")){
                                 String[] dimensions = returnedBoxResponse.data.dimension.split("×");
                                 boxLengthEditText.setText(dimensions[0]);
-                                boxLengthEditText.setEnabled(false);
+//                                boxLengthEditText.setEnabled(false);
                                 boxWidthEditText.setText(dimensions[1]);
-                                boxWidthEditText.setEnabled(false);
+//                                boxWidthEditText.setEnabled(false);
                                 boxHeightEditText.setText(dimensions[2]);
-                                boxHeightEditText.setEnabled(false);
+//                                boxHeightEditText.setEnabled(false);
                             }
-                            boxBarcodeTextView.setText(returnedBoxResponse.data.barCode);
+//                            boxBarcodeTextView.setText(returnedBoxResponse.data.barCode);
                         }
 
                     }
@@ -237,6 +264,7 @@ public class AddingNewBoxFragment extends Fragment {
                     }
                 }
             });
+
         }
         return view;
     }
@@ -244,9 +272,8 @@ public class AddingNewBoxFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        IntentFilter filter = new IntentFilter("com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED");
-        requireContext().registerReceiver(scanReceiver, filter);
-
+//        IntentFilter filter = new IntentFilter("com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED");
+//        requireContext().registerReceiver(scanReceiver, filter);
 
         NavController navController = NavHostFragment.findNavController(this);
 
@@ -259,12 +286,14 @@ public class AddingNewBoxFragment extends Fragment {
                         itemInfoTextView.setVisibility(View.VISIBLE);
                     });
         }
+
+
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        requireContext().unregisterReceiver(scanReceiver);
-    }
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        requireContext().unregisterReceiver(scanReceiver);
+//    }
 
 }

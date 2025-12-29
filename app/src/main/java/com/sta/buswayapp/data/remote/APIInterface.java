@@ -10,6 +10,8 @@ import com.sta.buswayapp.model.boxing.box.worker.getBoxNum.CurrentBoxResponse;
 import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxBody;
 import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxResponse;
 import com.sta.buswayapp.model.boxing.box.worker.modifyBox.ModifyBoxResponse;
+import com.sta.buswayapp.model.boxing.box.worker.updateBox.UpdateBoxData;
+import com.sta.buswayapp.model.boxing.box.worker.updateBox.UpdateBoxResponse;
 import com.sta.buswayapp.model.boxing.item.modifyItem.ModifyItemResponse;
 import com.sta.buswayapp.model.client.ClientResponse;
 import com.sta.buswayapp.model.boxing.item.Root;
@@ -72,6 +74,10 @@ public interface APIInterface {
     @POST("api/Box/submit")
     Call<SubmittedBoxes> submitBoxesByAdmin(@Body List<Integer> listOfIDs);
 
+    // add or update box and items.
+    @PUT("api/Box/UpdateItems")
+    Call<UpdateBoxResponse> updateBoxAndItsItems(@Body UpdateBoxData uploadBoxData);
+
     // Packing
     @GET("api/Box/Packing/Admin/{ProjectId}")
     Call<PackedBoxesResponse> getPackedBoxes(@Path("ProjectId") int projectID);
@@ -87,5 +93,7 @@ public interface APIInterface {
             @Query("type") int type,
             @Body List<Integer> boxesIDs
     );
+
+
 
  }

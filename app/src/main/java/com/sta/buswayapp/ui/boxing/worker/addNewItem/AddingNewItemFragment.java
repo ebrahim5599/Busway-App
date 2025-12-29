@@ -19,6 +19,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +32,11 @@ import com.sta.buswayapp.model.ConstantNames;
 
 import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsData;
 import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsResponse;
-import com.sta.buswayapp.model.boxing.item.modifyItem.ModifyItemResponse;
+import com.sta.buswayapp.model.boxing.item.Item;
 import com.sta.buswayapp.model.boxing.item.Root;
 import com.sta.buswayapp.model.boxing.item.ValidateItems;
+import com.sta.buswayapp.model.boxing.item.modifyItem.ModifyItemData;
+import com.sta.buswayapp.model.boxing.item.modifyItem.ModifyItemResponse;
 
 import java.util.ArrayList;
 
@@ -58,19 +61,20 @@ public class AddingNewItemFragment extends Fragment {
                 if (itemCodeArrayList != null && editItems) {
                     returnedItemList.add(new BoxedItemsData(barcodeData));
                     updatedItemsList.add(barcodeData);
-                    reviewAdapter.notifyDataSetChanged();
+//                    reviewAdapter.notifyDataSetChanged();
                 } else if (itemCodeArrayList != null && !editItems) {
                     itemCodeArrayList.add(barcodeData);
-                    adapter.notifyDataSetChanged();
+//                    adapter.notifyDataSetChanged();
                 }
-                Toast.makeText(requireContext(), "Scanned: " + barcodeData, Toast.LENGTH_SHORT).show();
+                adapter.notifyDataSetChanged();
+                // Toast.makeText(requireContext(), "Scanned: " + barcodeData, Toast.LENGTH_SHORT).show();
             }
         }
     };
 
     @SuppressLint("SetTextI18n")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentAddingNewItemsBinding.inflate(inflater, container, false);
@@ -82,7 +86,6 @@ public class AddingNewItemFragment extends Fragment {
             boxNumberAsText = bundle.getString("box_number_text", "");
             binding.boxNumberTextView.setText("Box No. " + boxId);
         }
-        Toast.makeText(getContext(), editItems + "", Toast.LENGTH_SHORT).show();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
         int projectID = Integer.parseInt(sharedPreferences.getString(ConstantNames.PROJECT_ID, "0"));
 
@@ -96,95 +99,78 @@ public class AddingNewItemFragment extends Fragment {
         returnedItemList = new ArrayList<>();
 
         if (editItems) {
-            binding.validateItems.setText("UPDATE ITEMS");
-            binding.loadingOverlay.setVisibility(View.VISIBLE);
-            addNewItemViewModel.getBoxItems(boxId);
-            reviewAdapter = new ReviewItemsAdapter(getContext(), returnedItemList, AddingNewItemFragment.this, true);
-            binding.completedPackingBoxesRecyclerView.setAdapter(reviewAdapter);
-            binding.completedPackingBoxesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            addNewItemViewModel.getItemResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<ModifyItemResponse>() {
-                @SuppressLint("NotifyDataSetChanged")
-                @Override
-                public void onChanged(ModifyItemResponse modifyItemResponse) {
-                    binding.loadingOverlay.setVisibility(View.GONE);
-                    if (modifyItemResponse == null) {
-                        Toast.makeText(getContext(), "Failed to update items.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (modifyItemResponse.isSucsess) {
-                            Toast.makeText(getContext(), modifyItemResponse.message, Toast.LENGTH_SHORT).show();
-                            NavController navController = NavHostFragment.findNavController(AddingNewItemFragment.this);
-                            if (navController.getPreviousBackStackEntry() != null) {
-                                navController.getPreviousBackStackEntry()
-                                        .getSavedStateHandle()
-                                        .set(ConstantNames.UPDATED_ITEMS_LIST_KEY, updatedItemsList);
-                            }
-                            navController.popBackStack();
-                            reviewAdapter.setHasError(false);
-                        } else {
-                            reviewAdapter.setWrongItemArrayList(modifyItemResponse.errors);
-                            reviewAdapter.setHasError(true);
-                        }
-                        reviewAdapter.notifyDataSetChanged();
-                    }
-                }
-            });
-            addNewItemViewModel.getBoxedItemsResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<BoxedItemsResponse>() {
-                @SuppressLint("NotifyDataSetChanged")
-                @Override
-                public void onChanged(BoxedItemsResponse boxedItemsResponse) {
-                    binding.loadingOverlay.setVisibility(View.GONE);
-                    binding.completedPackingBoxesRecyclerView.setVisibility(View.VISIBLE);
-                    if (boxedItemsResponse == null) {
-                        Toast.makeText(getContext(), "Failed to get items.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getContext(), boxedItemsResponse.message, Toast.LENGTH_SHORT).show();
-                        if (boxedItemsResponse.isSucsess) {
-                            returnedItemList.addAll(boxedItemsResponse.data);
-                            reviewAdapter.notifyDataSetChanged();
-                        }
-                    }
-                }
-            });
+            adapter = new ScannedItemsAdapter(getContext(), updatedItemsList, AddingNewItemFragment.this);
+//            reviewAdapter = new ReviewItemsAdapter(getContext(), returnedItemList, AddingNewItemFragment.this, true);
+//            binding.completedPackingBoxesRecyclerView.setAdapter(reviewAdapter);
+
+//            binding.loadingOverlay.setVisibility(View.VISIBLE);
+//            addNewItemViewModel.getBoxItems(boxId);
+//            // Get items inside the box.
+//            addNewItemViewModel.getBoxedItemsResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<BoxedItemsResponse>() {
+//                @SuppressLint("NotifyDataSetChanged")
+//                @Override
+//                public void onChanged(BoxedItemsResponse boxedItemsResponse) {
+//                    binding.loadingOverlay.setVisibility(View.GONE);
+//                    binding.completedPackingBoxesRecyclerView.setVisibility(View.VISIBLE);
+//                    if (boxedItemsResponse == null) {
+//                        Toast.makeText(getContext(), "Failed to get items.", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(getContext(), boxedItemsResponse.message, Toast.LENGTH_SHORT).show();
+//                        if (boxedItemsResponse.isSucsess) {
+//                            returnedItemList.addAll(boxedItemsResponse.data);
+//                            reviewAdapter.notifyDataSetChanged();
+//                        }
+//                    }
+//                }
+//            });
+
         } else {
             adapter = new ScannedItemsAdapter(getContext(), itemCodeArrayList, AddingNewItemFragment.this);
-            binding.completedPackingBoxesRecyclerView.setAdapter(adapter);
-            binding.completedPackingBoxesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            addNewItemViewModel.getResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Root>() {
-                @SuppressLint("NotifyDataSetChanged")
-                @Override
-                public void onChanged(Root root) {
-                    binding.loadingOverlay.setVisibility(View.GONE);
-                    if (root == null) {
-                        Toast.makeText(getContext(), "Failed to validate items.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (root.isSucsess) {
-                            Toast.makeText(getContext(), root.message, Toast.LENGTH_SHORT).show();
-                            NavController navController = NavHostFragment.findNavController(AddingNewItemFragment.this);
-                            if (navController.getPreviousBackStackEntry() != null) {
-                                navController.getPreviousBackStackEntry()
-                                        .getSavedStateHandle()
-                                        .set(ConstantNames.ITEMS_LIST_KEY, itemCodeArrayList);
-                            }
-                            navController.popBackStack();
-                            adapter.setHasError(false);
-                        } else {
-                            adapter.setWrongItemArrayList(root.items);
-                            adapter.setHasError(true);
-                        }
-                        adapter.notifyDataSetChanged();
-                    }
-                }
-            });
         }
+        binding.completedPackingBoxesRecyclerView.setAdapter(adapter);
+        binding.completedPackingBoxesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        // Validate Items button
         binding.validateItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.loadingOverlay.setVisibility(View.VISIBLE);
                 if (editItems) {
-                    addNewItemViewModel.updateItemsList(boxId, updatedItemsList);
+                    // TODO: LAST EDIT
+                    // addNewItemViewModel.updateItemsList(boxId, updatedItemsList);
+                    Log.i("TAG", "onClick: edit, " + boxId);
+                    addNewItemViewModel.validateBoxItems(new ValidateItems(projectID, updatedItemsList, boxId));
                 } else {
+                    Log.i("TAG", "onClick: new");
                     addNewItemViewModel.validateBoxItems(new ValidateItems(projectID, itemCodeArrayList));
+                }
+            }
+        });
+
+        addNewItemViewModel.getItemValidationResponseMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Root>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChanged(Root root) {
+                binding.loadingOverlay.setVisibility(View.GONE);
+                if (root == null) {
+                    Toast.makeText(getContext(), "Failed to validate items.", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (root.isSucsess) {
+                        Toast.makeText(getContext(), root.message, Toast.LENGTH_SHORT).show();
+                        NavController navController = NavHostFragment.findNavController(AddingNewItemFragment.this);
+                        if (navController.getPreviousBackStackEntry() != null) {
+                            navController.getPreviousBackStackEntry()
+                                    .getSavedStateHandle()
+                                    .set(ConstantNames.ITEMS_LIST_KEY,
+                                            editItems ? updatedItemsList : itemCodeArrayList);
+                        }
+                        navController.popBackStack();
+                        adapter.setHasError(false);
+                    } else {
+                        adapter.setWrongItemArrayList(root.items);
+                        adapter.setHasError(true);
+                    }
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -208,6 +194,27 @@ public class AddingNewItemFragment extends Fragment {
     public void onPause() {
         super.onPause();
         requireContext().unregisterReceiver(scanReceiver);
+    }
+
+    private ArrayList<ModifyItemData> convertToModifyItemList(ArrayList<Item> items) {
+        ArrayList<ModifyItemData> modifyList = new ArrayList<>();
+        for (Item item : items) {
+            ModifyItemData modifyItem = new ModifyItemData();
+            modifyItem.id = (int) item.id;
+            modifyItem.barcode = item.barcode;
+            modifyItem.index = item.index;
+            modifyItem.reason = item.reason;
+            modifyList.add(modifyItem);
+        }
+        return modifyList;
+    }
+
+    private ArrayList<String> convertToString(ArrayList<BoxedItemsData> boxedItemsData) {
+        ArrayList<String> modifyList = new ArrayList<>();
+        for (BoxedItemsData item : boxedItemsData) {
+            modifyList.add(item.barcode);
+        }
+        return modifyList;
     }
 
 }

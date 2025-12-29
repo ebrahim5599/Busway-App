@@ -20,6 +20,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.model.ConstantNames;
 import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsData;
+import com.sta.buswayapp.model.boxing.item.BaseItem;
 import com.sta.buswayapp.model.boxing.item.modifyItem.ModifyItemData;
 
 import java.util.ArrayList;
@@ -106,7 +107,7 @@ public class ReviewItemsAdapter extends RecyclerView.Adapter<ReviewItemsAdapter.
     }
 
     public void setWrongItemArrayList(ArrayList<ModifyItemData> wrongItemArrayList) {
-        this.wrongItemArrayList = wrongItemArrayList;
+        this.wrongItemArrayList =  wrongItemArrayList;
     }
 
     public void setHasError(boolean hasError) {

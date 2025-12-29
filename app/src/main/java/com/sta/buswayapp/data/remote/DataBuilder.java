@@ -9,6 +9,8 @@ import com.sta.buswayapp.model.boxing.box.worker.getBoxNum.CurrentBoxResponse;
 import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxBody;
 import com.sta.buswayapp.model.boxing.box.worker.createBox.CreatedBoxResponse;
 import com.sta.buswayapp.model.boxing.box.worker.modifyBox.ModifyBoxResponse;
+import com.sta.buswayapp.model.boxing.box.worker.updateBox.UpdateBoxData;
+import com.sta.buswayapp.model.boxing.box.worker.updateBox.UpdateBoxResponse;
 import com.sta.buswayapp.model.boxing.item.modifyItem.ModifyItemResponse;
 import com.sta.buswayapp.model.client.ClientResponse;
 import com.sta.buswayapp.model.boxing.item.Root;
@@ -86,6 +88,10 @@ public class DataBuilder {
 
     public Call<ModifyItemResponse> updateBoxItems(int boxId, ArrayList<String> barcodes){
         return apiInterface.updateBoxItems(boxId, barcodes);
+    }
+
+    public Call<UpdateBoxResponse> updateBoxAndItsItems(UpdateBoxData uploadBoxData){
+        return apiInterface.updateBoxAndItsItems(uploadBoxData);
     }
 
     public Call<BoxStatusResponse> updateBoxStatusToComplete(int boxId){

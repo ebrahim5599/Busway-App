@@ -233,6 +233,7 @@ public class PackingBoxesFragment extends Fragment {
             }
         });
         return view;
+
     }
 
     @Override
