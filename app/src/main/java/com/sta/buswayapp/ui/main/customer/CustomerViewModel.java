@@ -1,5 +1,7 @@
 package com.sta.buswayapp.ui.main.customer;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -17,11 +19,13 @@ public class CustomerViewModel extends ViewModel{
         DataBuilder.getINSTANCE().getClientData().enqueue(new Callback<ClientResponse>() {
             @Override
             public void onResponse(Call<ClientResponse> call, Response<ClientResponse> response) {
+                Log.d("TAG", "onResponse: Entered");
                 clientResponseMutableLiveData.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<ClientResponse> call, Throwable t) {
+                Log.d("TAG", "onFailure: Entered");
                 clientResponseMutableLiveData.setValue(null);
             }
         });

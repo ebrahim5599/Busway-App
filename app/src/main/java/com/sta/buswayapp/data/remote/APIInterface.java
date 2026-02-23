@@ -1,7 +1,12 @@
 package com.sta.buswayapp.data.remote;
 
 
+import android.service.autofill.UserData;
+
 import com.sta.buswayapp.model.GuestData;
+import com.sta.buswayapp.model.auth.BaseResponse;
+import com.sta.buswayapp.model.auth.UserDataResponse;
+import com.sta.buswayapp.model.auth.LoginRequest;
 import com.sta.buswayapp.model.boxing.box.admin.ReturnedBox.ReturnedBoxResponse;
 import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsResponse;
 import com.sta.buswayapp.model.boxing.box.admin.boxStatus.BoxStatusResponse;
@@ -19,6 +24,7 @@ import com.sta.buswayapp.model.boxing.item.ValidateItems;
 import com.sta.buswayapp.model.packing.PackedBoxesResponse;
 import com.sta.buswayapp.model.project.ProjectResponse;
 import com.sta.buswayapp.model.boxing.box.admin.SubmittedBoxes;
+
 
 import java.util.List;
 
@@ -93,6 +99,11 @@ public interface APIInterface {
             @Query("type") int type,
             @Body List<Integer> boxesIDs
     );
+
+    // AUTHENTICATION
+    @POST("api/Auth/login")
+    Call<BaseResponse<UserDataResponse>> login(@Body LoginRequest loginRequest);
+
 
 
 

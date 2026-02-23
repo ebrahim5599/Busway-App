@@ -67,7 +67,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
                 editor.apply();
 
                 if (processName.equals(ConstantNames.BOXING)) {
-                    if (sharedPreferences.getString(ConstantNames.TYPE_OF_USER, "def").equals(ConstantNames.WORKER))
+                    if (sharedPreferences.getString(ConstantNames.ROLE, "def").equals(ConstantNames.BLUE_COLLAR))
                         NavHostFragment.findNavController(fragment)
                                 .navigate(R.id.newOrEditBoxFragment, null, options);
                     else

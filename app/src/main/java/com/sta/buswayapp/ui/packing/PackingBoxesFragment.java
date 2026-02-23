@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.sta.buswayapp.R;
 import com.sta.buswayapp.adapter.PackedBoxAdapter;
+import com.sta.buswayapp.model.DEPARTMENT_CODE;
 import com.sta.buswayapp.databinding.FragmentPackingSupervisorSideBinding;
 import com.sta.buswayapp.model.ConstantNames;
 import com.sta.buswayapp.model.boxing.box.admin.SubmittedBoxes;
@@ -38,7 +39,6 @@ import com.sta.buswayapp.model.packing.PackedBoxesData;
 import com.sta.buswayapp.model.packing.PackedBoxesResponse;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PackingBoxesFragment extends Fragment {
 
@@ -85,7 +85,7 @@ public class PackingBoxesFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(PackingBoxesViewModel.class);
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(ConstantNames.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
         int projectId = Integer.parseInt(sharedPreferences.getString(ConstantNames.PROJECT_ID, "0"));
-        int dept = sharedPreferences.getInt(ConstantNames.DEPARTMENT, 0);
+        String dept = sharedPreferences.getString(ConstantNames.DEPARTMENT, "");
 
         binding.packingProcessCustomerNameAdminView.setText("Customer: " + sharedPreferences.getString(ConstantNames.CLIENT, ""));
         binding.packingProcessJobSalesrderAdminView.setText("Sales order: " + sharedPreferences.getString(ConstantNames.SALES_ORDER, ""));
@@ -103,7 +103,7 @@ public class PackingBoxesFragment extends Fragment {
         idsForReadyBoxes = packedBoxAdapter.getIdsOfReadyBoxes();
 
         switch (dept) {
-            case 0 -> {
+            case ConstantNames.PRODUCTION_DEPARTMENT -> { // 0
                 binding.qualitySubmitPackingAdminView.setActivated(false);
                 binding.qualitySubmitPackingAdminView.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.light_gray));
 
@@ -112,7 +112,7 @@ public class PackingBoxesFragment extends Fragment {
 
                 binding.productionSubmitPackingAdminView.setActivated(true);
             }
-            case 1 -> {
+            case ConstantNames.QUALITY_DEPARTMENT -> { // 1
                 binding.productionSubmitPackingAdminView.setActivated(false);
                 binding.productionSubmitPackingAdminView.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.light_gray));
 
@@ -121,7 +121,7 @@ public class PackingBoxesFragment extends Fragment {
 
                 binding.qualitySubmitPackingAdminView.setActivated(true);
             }
-            case 2 -> {
+            case ConstantNames.DISPATCH_DEPARTMENT -> { // 2
                 binding.productionSubmitPackingAdminView.setActivated(false);
                 binding.productionSubmitPackingAdminView.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.light_gray));
 
@@ -137,7 +137,7 @@ public class PackingBoxesFragment extends Fragment {
             public void onClick(View v) {
                 if (v.isActivated()){
                     if (!idsForReadyBoxes.isEmpty()) {
-                        viewModel.submitPacking(dept, idsForReadyBoxes);
+                        viewModel.submitPacking(DEPARTMENT_CODE.Companion.getValue(dept), idsForReadyBoxes);
                         binding.loadingOverlay.setVisibility(View.VISIBLE);
                     } else
                         Toast.makeText(getContext(), "First, you must review the packed boxes.", Toast.LENGTH_SHORT).show();
@@ -152,7 +152,7 @@ public class PackingBoxesFragment extends Fragment {
             public void onClick(View v) {
                 if (v.isActivated()){
                     if (!idsForReadyBoxes.isEmpty()) {
-                        viewModel.submitPacking(dept, idsForReadyBoxes);
+                        viewModel.submitPacking(DEPARTMENT_CODE.Companion.getValue(dept), idsForReadyBoxes);
                         binding.loadingOverlay.setVisibility(View.VISIBLE);
                     }else
                         Toast.makeText(getContext(), "First, you must review the packed boxes.", Toast.LENGTH_SHORT).show();
@@ -167,7 +167,7 @@ public class PackingBoxesFragment extends Fragment {
             public void onClick(View v) {
                 if (v.isActivated()){
                     if (!idsForReadyBoxes.isEmpty()) {
-                        viewModel.submitPacking(dept, idsForReadyBoxes);
+                        viewModel.submitPacking(DEPARTMENT_CODE.Companion.getValue(dept), idsForReadyBoxes);
                         binding.loadingOverlay.setVisibility(View.VISIBLE);
                     }else
                         Toast.makeText(getContext(), "First, you must review the packed boxes.", Toast.LENGTH_SHORT).show();

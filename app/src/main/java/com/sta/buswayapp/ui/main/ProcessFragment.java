@@ -2,20 +2,21 @@ package com.sta.buswayapp.ui.main;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sta.buswayapp.R;
@@ -57,7 +58,7 @@ public class ProcessFragment extends Fragment {
         packingCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sharedPreferences.getString(ConstantNames.TYPE_OF_USER, "").equals(ConstantNames.SUPERVISOR)){
+                if (sharedPreferences.getString(ConstantNames.ROLE, "").equals(ConstantNames.WHITE_COLLAR)){
                     Toast.makeText(getContext(), "packing", Toast.LENGTH_SHORT).show();
                     editor.putString(ConstantNames.PROCESS, ConstantNames.PACKING_CHECK);
                     editor.apply();
@@ -87,7 +88,7 @@ public class ProcessFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("title", sharedPreferences.getString(ConstantNames.TYPE_OF_USER, "user"));
+                bundle.putString("title", sharedPreferences.getString(ConstantNames.ROLE, "user"));
 
                 NavHostFragment.findNavController(ProcessFragment.this)
                         .navigate(R.id.guestScanFragment, bundle, options);
@@ -109,5 +110,28 @@ public class ProcessFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                showExitDialog();
+            }
+        });
+    }
+
+    private void showExitDialog(){
+        new AlertDialog.Builder(requireContext())
+                .setTitle("تأكيد الخروج")
+                .setMessage("هل أنت متأكد أنك تريد مغادرة التطبيق؟")
+                .setPositiveButton("خروج", (dialog, which) -> {
+                    requireActivity().finish();
+                })
+                .setNegativeButton("إلغاء", null)
+                .show();
     }
 }

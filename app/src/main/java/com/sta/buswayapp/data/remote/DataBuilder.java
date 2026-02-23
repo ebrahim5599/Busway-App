@@ -1,6 +1,11 @@
 package com.sta.buswayapp.data.remote;
 
+import android.service.autofill.UserData;
+
 import com.sta.buswayapp.model.GuestData;
+import com.sta.buswayapp.model.auth.BaseResponse;
+import com.sta.buswayapp.model.auth.LoginRequest;
+import com.sta.buswayapp.model.auth.UserDataResponse;
 import com.sta.buswayapp.model.boxing.box.admin.ReturnedBox.ReturnedBoxResponse;
 import com.sta.buswayapp.model.boxing.box.admin.boxItems.BoxedItemsResponse;
 import com.sta.buswayapp.model.boxing.box.admin.boxStatus.BoxStatusResponse;
@@ -26,7 +31,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DataBuilder {
-    private static final String GUEST_URL = "https://transformsapp.runasp.net/";
+    private static final String GUEST_URL = "https://elp-hh.elsewedy.com/";
     private final APIInterface apiInterface;
     private static DataBuilder INSTANCE;
 
@@ -123,5 +128,10 @@ public class DataBuilder {
     }
 
 
+
+    // AUTHENTICATION
+    public Call<BaseResponse<UserDataResponse>> login(LoginRequest loginRequest){
+        return apiInterface.login(loginRequest);
+    }
 
 }

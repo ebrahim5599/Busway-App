@@ -5,9 +5,9 @@ public class ConstantNames {
     public final static String ELSEWEDY_DOMAIN = "@elsewedy.com";
     public final static String EMAIL = "email";
     public final static String PASSWORD = "password";
-    public final static String TYPE_OF_USER = "user";
-    public final static String SUPERVISOR = "supervisor";
-    public final static String WORKER = "worker";
+    public final static String ROLE = "role";
+//    public final static String SUPERVISOR = "supervisor";
+//    public final static String WORKER = "worker";
     public final static String CLIENT = "client";
     public final static String PROCESS = "process";
     public final static String BOXING = "boxing";
@@ -36,10 +36,18 @@ public class ConstantNames {
     public static final String BOX_ID = "box id";
     public static final String PACKING_STAGE = "packing stage";
 
-
     public static final String READY_BOX_ID = "ready box id";
     public static final String READY_BOX_NUMBER = "ready box number";
     public static final String BOX_BARCODE = "box barcode";
     public static final String BOX_NUMBER_WORKER = "box number for worker";
+    public static final String WHITE_COLLAR = "White Collar";
+    public static final String BLUE_COLLAR = "Blue Collar";
+    public static final String DEPARTMENT_CODE = "departmentCode";
     public static final String DEPARTMENT = "department";
+    public static final String FULL_NAME = "fullName";
+    public static final String TOKEN = "token";
+    public static final String USER_ID = "userId";
+    public static final String PRODUCTION_DEPARTMENT = "Busway Production";
+    public static final String QUALITY_DEPARTMENT = "Quality Control";
+    public static final String DISPATCH_DEPARTMENT = "Dispatching";
 }

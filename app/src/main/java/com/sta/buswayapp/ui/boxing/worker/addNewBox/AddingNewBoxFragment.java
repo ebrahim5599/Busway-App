@@ -124,13 +124,23 @@ public class AddingNewBoxFragment extends Fragment {
             public void onClick(View v) {
                 navigateToCustomerFragment = false;
 
-                boxWeight = Integer.parseInt(boxWeightEditText.getText().toString());
                 boxLength = boxLengthEditText.getText().toString();
                 boxWidth = boxWidthEditText.getText().toString();
                 boxHeight = boxHeightEditText.getText().toString();
                 boxDimensions = boxLength + "×" + boxWidth + "×" + boxHeight;
 
-                addingNewBoxViewModel.createNewBox(new CreatedBoxBody("", boxWeight, boxDimensions, projectID, receivedList ));
+                if (boxWeightEditText.getText().toString().isEmpty()){
+                    boxWeightEditText.setError("You must enter a value");
+                } else if (boxLength.isEmpty()) {
+                    boxLengthEditText.setError("You must enter a value");
+                }else if (boxWidth.isEmpty()) {
+                    boxWidthEditText.setError("You must enter a value");
+                }else if (boxHeight.isEmpty()) {
+                    boxHeightEditText.setError("You must enter a value");
+                }else{
+                    boxWeight = Integer.parseInt(boxWeightEditText.getText().toString());
+                    addingNewBoxViewModel.createNewBox(new CreatedBoxBody("", boxWeight, boxDimensions, projectID, receivedList ));
+                }
             }
         });
 
