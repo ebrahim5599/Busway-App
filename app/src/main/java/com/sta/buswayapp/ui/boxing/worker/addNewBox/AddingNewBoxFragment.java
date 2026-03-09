@@ -137,7 +137,7 @@ public class AddingNewBoxFragment extends Fragment {
                     boxWidthEditText.setError("You must enter a value");
                 }else if (boxHeight.isEmpty()) {
                     boxHeightEditText.setError("You must enter a value");
-                }else{
+                }else {
                     boxWeight = Integer.parseInt(boxWeightEditText.getText().toString());
                     addingNewBoxViewModel.createNewBox(new CreatedBoxBody("", boxWeight, boxDimensions, projectID, receivedList ));
                 }
@@ -149,13 +149,23 @@ public class AddingNewBoxFragment extends Fragment {
             public void onClick(View v) {
                 navigateToCustomerFragment = true;
 
-                boxWeight = Integer.parseInt(boxWeightEditText.getText().toString());
                 boxLength = boxLengthEditText.getText().toString();
                 boxWidth = boxWidthEditText.getText().toString();
                 boxHeight = boxHeightEditText.getText().toString();
                 boxDimensions = boxLength + "×" + boxWidth + "×" + boxHeight;
 
-                addingNewBoxViewModel.createNewBox(new CreatedBoxBody("", boxWeight, boxDimensions, projectID, receivedList ));
+                if (boxWeightEditText.getText().toString().isEmpty()){
+                    boxWeightEditText.setError("You must enter a value");
+                } else if (boxLength.isEmpty()) {
+                    boxLengthEditText.setError("You must enter a value");
+                }else if (boxWidth.isEmpty()) {
+                    boxWidthEditText.setError("You must enter a value");
+                }else if (boxHeight.isEmpty()) {
+                    boxHeightEditText.setError("You must enter a value");
+                }else{
+                    boxWeight = Integer.parseInt(boxWeightEditText.getText().toString());
+                    addingNewBoxViewModel.createNewBox(new CreatedBoxBody("", boxWeight, boxDimensions, projectID, receivedList ));
+                }
             }
         });
 
@@ -182,12 +192,11 @@ public class AddingNewBoxFragment extends Fragment {
                     if (uploadedBoxResponse.isSuccess){
                         if (navigateToCustomerFragment){
                             NavHostFragment.findNavController(AddingNewBoxFragment.this).popBackStack(R.id.currentCustomersFragment, false);
-                        } else {
-                            boxWeightEditText.setText(null);
-                            boxBarcodeTextView.setText(null);
-                            boxLengthEditText.setText(null);
-                            boxWidthEditText.setText(null);
-                            boxHeightEditText.setText(null);
+                        }else {
+                            boxWeightEditText.setText("");
+                            boxLengthEditText.setText("");
+                            boxWidthEditText.setText("");
+                            boxHeightEditText.setText("");
                             receivedList.clear();
                             itemInfoTextView.setVisibility(View.GONE);
                             progressBar.setVisibility(View.VISIBLE);
