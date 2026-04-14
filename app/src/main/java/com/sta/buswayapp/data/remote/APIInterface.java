@@ -56,6 +56,7 @@ public interface APIInterface {
     @GET("api/Box/GetNextBoxNumber")
     Call<CurrentBoxResponse> getBoxNumber(@Query("projectId") String projectId);
 
+    // TODO: !! Working Area !!: Responsible for submitting boxes
     @GET("api/Box/Admin/Project/{projectId}")
     Call<CompletedBoxResponse> getCompletedBoxes(@Path("projectId") int projectId);
 
@@ -104,7 +105,9 @@ public interface APIInterface {
     @POST("api/Auth/login")
     Call<BaseResponse<UserDataResponse>> login(@Body LoginRequest loginRequest);
 
-
+    // SEARCH
+    @GET("api/Project/customers")
+    Call<ClientResponse> searchForCustomers(@Query("name") String customer);
 
 
  }

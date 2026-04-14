@@ -56,7 +56,10 @@ public class ScannedItemsFragment extends Fragment {
             binding.progressBar.setVisibility(View.VISIBLE);
             binding.completedItemsRecyclerView.setVisibility(View.GONE);
             scannedItemsViewModel.getScannedItems(boxId);
-            binding.boxNumberTextView.setText("Box " + boxNumber);
+            if (boxNumber == 0)
+                binding.boxNumberTextView.setVisibility(View.GONE);
+            else
+                binding.boxNumberTextView.setText("Box " + boxNumber);
 
             if (!boxBarcode.equals("")){
                 scannedItemsViewModel.getBoxItemsByBarcode(boxBarcode);

@@ -18,13 +18,13 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="start"
+                android:layout_margin="8dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:text="Admin view | Packing"
                     android:textColor="@color/black"
                     android:textSize="18sp"
@@ -34,7 +34,6 @@
                     android:id="@+id/packingProcessCustomerNameAdminView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:text="Customer : "
                     android:textColor="@color/black"
                     android:textSize="18sp"
@@ -44,7 +43,6 @@
                     android:id="@+id/packingProcessJobSalesrderAdminView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:text="Sales order: "
                     android:textColor="@color/black"
                     android:textSize="18sp"

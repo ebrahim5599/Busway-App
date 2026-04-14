@@ -32,6 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DataBuilder {
     private static final String GUEST_URL = "https://elp-hh.elsewedy.com/";
+//    private static final String GUEST_URL = "https://10.1.46.86/";
     private final APIInterface apiInterface;
     private static DataBuilder INSTANCE;
 
@@ -132,6 +133,11 @@ public class DataBuilder {
     // AUTHENTICATION
     public Call<BaseResponse<UserDataResponse>> login(LoginRequest loginRequest){
         return apiInterface.login(loginRequest);
+    }
+
+    // SEARCH
+    public Call<ClientResponse> searchForCustomers(String customer){
+        return apiInterface.searchForCustomers(customer);
     }
 
 }

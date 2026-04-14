@@ -3,6 +3,7 @@ package com.sta.buswayapp.model.boxing.box.admin.boxItems;
 public class BoxedItemsData{
     public int id;
     public String barcode;
+    public String type;
     public boolean isBoxed;
 
     public BoxedItemsData(String barcode) {
@@ -11,5 +12,9 @@ public class BoxedItemsData{
 
     public String getBarcode() {
         return barcode;
+    }
+
+    public String getType() {
+        return type;
     }
 }

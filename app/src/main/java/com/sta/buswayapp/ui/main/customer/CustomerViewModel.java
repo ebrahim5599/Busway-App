@@ -30,4 +30,18 @@ public class CustomerViewModel extends ViewModel{
             }
         });
     }
+
+    public void searchForCustomers(String customer){
+        DataBuilder.getINSTANCE().searchForCustomers(customer).enqueue(new Callback<ClientResponse>() {
+            @Override
+            public void onResponse(Call<ClientResponse> call, Response<ClientResponse> response) {
+                clientResponseMutableLiveData.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ClientResponse> call, Throwable t) {
+                clientResponseMutableLiveData.setValue(null);
+            }
+        });
+    }
 }

@@ -28,16 +28,30 @@
             android:textColor="@color/white"
             android:background="#424242"/>
 
-        <TextView
-            android:id="@+id/itemCodeTextView"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:layout_weight="1"
             android:padding="24dp"
-            android:text="978123456789"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/itemCodeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="978123456789"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/itemTypeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Finished"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/removeItemIcon"

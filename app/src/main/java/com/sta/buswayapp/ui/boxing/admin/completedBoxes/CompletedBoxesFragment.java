@@ -73,6 +73,7 @@ public class CompletedBoxesFragment extends Fragment {
             }
         });
 
+        // After submitting the boxes
         binding.submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

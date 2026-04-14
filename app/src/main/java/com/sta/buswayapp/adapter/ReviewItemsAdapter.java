@@ -59,7 +59,9 @@ public class ReviewItemsAdapter extends RecyclerView.Adapter<ReviewItemsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ReviewItemsAdapter.ItemsViewHolder holder, @SuppressLint("RecyclerView") int position) {
         String code = itemCodeArrayList.get(position).barcode;
+        String type = itemCodeArrayList.get(position).getType();
         holder.itemCodeTextView.setText(code);
+        holder.itemTypeTextView.setText(type);
         holder.cardOrderTextView.setText(String.valueOf((holder.getAdapterPosition() + 1)));
 
         if (hasError) {
@@ -67,6 +69,7 @@ public class ReviewItemsAdapter extends RecyclerView.Adapter<ReviewItemsAdapter.
                 if (wrong.barcode.equals(code)) {
                     holder.scannedItemCardView.setStrokeColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error_bg));
                     holder.scannedItemCardView.setStrokeWidth(4); // thickness of border
+                    holder.itemTypeTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error_bg));
                     holder.itemCodeTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error_bg));
                     break;
                 }
@@ -93,13 +96,14 @@ public class ReviewItemsAdapter extends RecyclerView.Adapter<ReviewItemsAdapter.
 
     public static class ItemsViewHolder extends RecyclerView.ViewHolder {
         MaterialCardView scannedItemCardView;
-        TextView itemCodeTextView, cardOrderTextView;
+        TextView itemCodeTextView, cardOrderTextView, itemTypeTextView;
         ImageView removeItemIcon;
 
         public ItemsViewHolder(@NonNull View itemView) {
             super(itemView);
             scannedItemCardView = itemView.findViewById(R.id.itemCodeCardView);
             itemCodeTextView = itemView.findViewById(R.id.itemCodeTextView);
+            itemTypeTextView = itemView.findViewById(R.id.itemTypeTextView);
             cardOrderTextView = itemView.findViewById(R.id.cardOrder);
             removeItemIcon = itemView.findViewById(R.id.removeItemIcon);
 

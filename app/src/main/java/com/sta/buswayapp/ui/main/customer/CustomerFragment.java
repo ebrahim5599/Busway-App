@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,8 +24,6 @@ import com.sta.buswayapp.R;
 import com.sta.buswayapp.adapter.CustomerAdapter;
 import com.sta.buswayapp.model.client.ClientData;
 import com.sta.buswayapp.model.client.ClientResponse;
-import com.sta.buswayapp.ui.guestView.GuestDataFragment;
-import com.sta.buswayapp.ui.guestView.GuestDataViewModel;
 
 import java.util.ArrayList;
 
@@ -39,6 +38,7 @@ public class CustomerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_customer, container, false);
         ArrayList<ClientData> client = new ArrayList<>();
         CustomerAdapter adapter = new CustomerAdapter(getContext(), client, CustomerFragment.this);
+        SearchView searchView = view.findViewById(R.id.searchView);
         recyclerView = view.findViewById(R.id.customers_recyclerview);
 
         progressBar = view.findViewById(R.id.progressBar);
@@ -68,6 +68,23 @@ public class CustomerFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
+        searchView.setIconifiedByDefault(false);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(getContext(), "Searching for: " + query, Toast.LENGTH_SHORT).show();
+                customerViewModel.searchForCustomers(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+//                Toast.makeText(getContext(), "Typing: " + newText, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
         return view;
     }
 }

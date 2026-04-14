@@ -48,6 +48,6 @@ public class ConstantNames {
     public static final String TOKEN = "token";
     public static final String USER_ID = "userId";
     public static final String PRODUCTION_DEPARTMENT = "Busway Production";
-    public static final String QUALITY_DEPARTMENT = "Quality Control";
-    public static final String DISPATCH_DEPARTMENT = "Dispatching";
+    public static final String QUALITY_DEPARTMENT = "Busway Quality and Testing";
+    public static final String DISPATCH_DEPARTMENT = "Dispatch";
 }

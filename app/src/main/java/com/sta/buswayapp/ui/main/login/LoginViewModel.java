@@ -32,6 +32,7 @@ public class LoginViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<BaseResponse<UserDataResponse>> call, Throwable t) {
+                Log.i("TAG", "onFailure:" + t.getMessage());
                 loginResponseMutableLiveData.setValue(null);
             }
         });
