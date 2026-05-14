@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.sta.buswayapp.R
 
@@ -56,7 +57,21 @@ class GuestScanFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val filter = IntentFilter("com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED")
-        requireContext().registerReceiver(scanReceiver, filter)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            requireContext().registerReceiver(
+                scanReceiver,
+                filter,
+                Context.RECEIVER_NOT_EXPORTED
+            );
+        } else {
+            ContextCompat.registerReceiver(
+                requireContext(),
+                scanReceiver,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            );
+        }
+//        requireContext().registerReceiver(scanReceiver, filter)
     }
 
     override fun onPause() {
